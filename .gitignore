@@ -45,9 +45,4 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-<<<<<<< HEAD
 *.g.dart
-=======
-*.g.dart
-!/lib/core/icons.g.dart
->>>>>>> develop
