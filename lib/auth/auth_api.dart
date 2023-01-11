@@ -1,7 +1,7 @@
 import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 import 'package:oauth2_client/google_oauth2_client.dart';
-import 'package:yotify/services/config.dart';
+import 'package:yotifiy/auth/config.dart';
 
 class YoutubeApi {
   final String _redirectUri = 'http://localhost:42069/callback';
