@@ -6,6 +6,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:yotifiy/auth/auth_api.dart';
 import 'package:yotifiy/auth/auth_cubit.dart';
 import 'package:yotifiy/auth/sign_up_page.dart';
+import 'package:yotifiy/core/storage.dart';
 import 'package:yotifiy/core/theme/data.dart';
 import 'package:yotifiy/core/theme/widget.dart';
 
@@ -13,8 +14,9 @@ void main() {
   runApp(const YFApp());
 }
 
+final _storage = YFStorage();
 final _authApi = YFAuthApi();
-final _authCubit = YFAuthCubit(_authApi);
+final _authCubit = YFAuthCubit(_authApi, _storage);
 
 class YFApp extends StatefulWidget {
   static final mainRouteKey = GlobalKey<NavigatorState>();

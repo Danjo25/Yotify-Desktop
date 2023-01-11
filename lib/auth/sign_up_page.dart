@@ -1,3 +1,4 @@
+import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -16,6 +17,13 @@ class YFSignUpPage extends StatefulWidget {
 class _YFSignUpPageState extends State<YFSignUpPage> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    DesktopWindow.setMinWindowSize(const Size(800, 600));
+    DesktopWindow.setMaxWindowSize(const Size(1400, 1200));
+  }
 
   @override
   void dispose() {
@@ -53,7 +61,8 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
   Widget _buildLoginCard() {
     return Center(
       child: Container(
-        width: 500,
+        width: double.infinity,
+        height: double.infinity,
         decoration: const BoxDecoration(
           color: Colors.purple,
           gradient: LinearGradient(
