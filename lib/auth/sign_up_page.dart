@@ -15,22 +15,11 @@ class YFSignUpPage extends StatefulWidget {
 }
 
 class _YFSignUpPageState extends State<YFSignUpPage> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-
   @override
   void initState() {
     super.initState();
     DesktopWindow.setMinWindowSize(const Size(800, 600));
     DesktopWindow.setMaxWindowSize(const Size(1400, 1200));
-  }
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-
-    super.dispose();
   }
 
   @override
@@ -102,24 +91,21 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
         onPressed: onPressed,
         child: const Text(
           'Login',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 30),
         ),
       ),
     );
   }
 
   void onPressed() {
-    context.read<YFAuthCubit>().loginSpotify(
-          _usernameController.text,
-          _passwordController.text,
-        );
+    context.read<YFAuthCubit>().loginSpotify();
   }
 
   Widget _buildLogo() {
     return Center(
       child: Image.asset(
         YotifyLogo,
-        height: 34,
+        height: 150,
         fit: BoxFit.fitHeight,
       ),
     );
@@ -128,35 +114,9 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
   Widget _buildLoginForm() {
     return Column(
       children: [
-        _buildUsernameField(),
-        _buildPasswordField(),
         context.spaceTheme.fixedSpace(8.h),
         _buildLoginButton(),
       ],
-    );
-  }
-
-  Widget _buildPasswordField() {
-    return TextField(
-      controller: _passwordController,
-      maxLines: 1,
-      decoration: InputDecoration(
-        hintText: 'password',
-        hintStyle: TextStyle(color: context.colorTheme.hint),
-      ),
-      obscureText: true,
-      cursorColor: Colors.white,
-    );
-  }
-
-  Widget _buildUsernameField() {
-    return TextField(
-      controller: _usernameController,
-      decoration: InputDecoration(
-        hintText: 'username',
-        hintStyle: TextStyle(color: context.colorTheme.hint),
-      ),
-      cursorColor: Colors.white,
     );
   }
 }

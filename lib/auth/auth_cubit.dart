@@ -20,12 +20,11 @@ class YFAuthState {
 }
 
 class YFAuthCubit extends Cubit<YFAuthState> with Logger {
-  final YFAuthApi _api;
   final YFStorage _storage;
 
-  YFAuthCubit(this._api, this._storage) : super(YFAuthState());
+  YFAuthCubit(this._storage) : super(YFAuthState());
 
-  Future<void> loginSpotify(String username, String password) async {
+  Future<void> loginSpotify() async {
     try {
       print('LoginSpotify');
     } catch (e, stack) {

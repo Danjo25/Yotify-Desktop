@@ -15,8 +15,7 @@ void main() {
 }
 
 final _storage = YFStorage();
-final _authApi = YFAuthApi();
-final _authCubit = YFAuthCubit(_authApi, _storage);
+final _authCubit = YFAuthCubit(_storage);
 
 class YFApp extends StatefulWidget {
   static final mainRouteKey = GlobalKey<NavigatorState>();
