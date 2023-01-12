@@ -1,9 +1,9 @@
 import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 import 'package:oauth2_client/google_oauth2_client.dart';
-import 'package:yotifiy/auth/config.dart';
+import 'package:yotifiy/config.dart';
 
-class YoutubeApi {
+class YFYoutubeApi {
   final String _redirectUri = 'http://localhost:42069/callback';
   final String _uriScheme = 'http://localhost:42069';
   final List<String> _scopes = [
@@ -18,7 +18,7 @@ class YoutubeApi {
   final String _endpointPlaylists =
       'https://www.googleapis.com/youtube/v3/playlists?mine=true';
 
-  YoutubeApi()
+  YFYoutubeApi()
       : _clientId = Config.clientId(),
         _clientSecret = Config.clientSecret();
 
@@ -28,6 +28,13 @@ class YoutubeApi {
     var res = await helper.get(_endpointPlaylists);
 
     print(res.body);
+  }
+
+  Future<void> fetchToken() async {
+    OAuth2Helper helper = getAuthHelper();
+
+    var res = await helper.fetchToken();
+    print(res);
   }
 
   OAuth2Helper getAuthHelper() {

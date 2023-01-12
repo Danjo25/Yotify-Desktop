@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:yotifiy/auth/auth_api.dart';
-import 'package:yotifiy/auth/auth_cubit.dart';
-import 'package:yotifiy/auth/sign_up_page.dart';
+import 'package:yotifiy/youtube_auth/youtube_api.dart';
+import 'package:yotifiy/youtube_auth/youtube_auth_cubit.dart';
+import 'package:yotifiy/youtube_auth/sign_up_page.dart';
 import 'package:yotifiy/core/storage.dart';
 import 'package:yotifiy/core/theme/data.dart';
 import 'package:yotifiy/core/theme/widget.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load();
   runApp(const YFApp());
 }
 
+final _youtubeApi = YFYoutubeApi();
 final _storage = YFStorage();
-final _authCubit = YFAuthCubit(_storage);
+final _authCubit = YFAuthCubit(_youtubeApi);
 
 class YFApp extends StatefulWidget {
   static final mainRouteKey = GlobalKey<NavigatorState>();

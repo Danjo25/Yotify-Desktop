@@ -1,9 +1,8 @@
-import 'package:yotifiy/auth/auth_api.dart';
+import 'package:yotifiy/youtube_auth/youtube_api.dart';
 import 'package:yotifiy/core/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:yotifiy/core/storage.dart';
 
-class YFAuthState {
+class YFYoutubeAuthState {
   final String? data;
   final bool isLoading;
   final dynamic error;
@@ -11,7 +10,7 @@ class YFAuthState {
 
   bool get hasError => error != null;
 
-  YFAuthState({
+  YFYoutubeAuthState({
     this.data,
     this.isLoading = false,
     this.error,
@@ -19,14 +18,14 @@ class YFAuthState {
   });
 }
 
-class YFAuthCubit extends Cubit<YFAuthState> with Logger {
-  final YFStorage _storage;
+class YFAuthCubit extends Cubit<YFYoutubeAuthState> with Logger {
+  final YFYoutubeApi _youtubeApi;
 
-  YFAuthCubit(this._storage) : super(YFAuthState());
+  YFAuthCubit(this._youtubeApi) : super(YFYoutubeAuthState());
 
-  Future<void> loginSpotify() async {
+  Future<void> login() async {
     try {
-      print('LoginSpotify');
+     await _youtubeApi.fetchToken();
     } catch (e, stack) {
       logError(e, stack);
     }
