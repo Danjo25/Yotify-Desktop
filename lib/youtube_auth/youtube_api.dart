@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 import 'package:oauth2_client/google_oauth2_client.dart';
 import 'package:yotifiy/config.dart';
+import 'package:yotifiy/user/user_info.dart';
 
 class YFYoutubeApi {
   final String _redirectUri = 'http://localhost:42069/callback';
@@ -17,6 +20,8 @@ class YFYoutubeApi {
 
   final String _endpointPlaylists =
       'https://www.googleapis.com/youtube/v3/playlists?mine=true';
+  final String _endpointUserInfo =
+      'https://www.googleapis.com/oauth2/v1/userinfo?alt=json';
 
   YFYoutubeApi()
       : _clientId = Config.clientId(),
@@ -28,6 +33,19 @@ class YFYoutubeApi {
     var res = await helper.get(_endpointPlaylists);
 
     print(res.body);
+  }
+
+  Future<YFUserInfo> fetchUserInfo() async {
+    var res = await getAuthHelper().get(_endpointUserInfo);
+
+    var data = jsonDecode(res.body);
+
+    return YFUserInfo(
+      firstname: data['given_name'] ?? '',
+      lastname: data['family_name'] ?? '',
+      picture: data['picture'] ?? '',
+      locale: data['locale'] ?? '',
+    );
   }
 
   Future<void> fetchToken() async {
