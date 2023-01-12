@@ -6,7 +6,6 @@ class YFYoutubeAuthState {
   final String? data;
   final bool isLoading;
   final dynamic error;
-  final bool isAuthenticated;
 
   bool get hasError => error != null;
 
@@ -14,7 +13,6 @@ class YFYoutubeAuthState {
     this.data,
     this.isLoading = false,
     this.error,
-    this.isAuthenticated = false,
   });
 }
 
@@ -25,7 +23,7 @@ class YFAuthCubit extends Cubit<YFYoutubeAuthState> with Logger {
 
   Future<void> login() async {
     try {
-     await _youtubeApi.fetchToken();
+      await _youtubeApi.fetchToken();
     } catch (e, stack) {
       logError(e, stack);
     }

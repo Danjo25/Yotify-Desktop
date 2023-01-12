@@ -53,6 +53,7 @@ dev_dependencies:
   json_serializable: ^6.5.4
   flutter_test:
     sdk: flutter
+  copy_with_extension_gen: ^4.0.4
     
 
   # The "flutter_lints" package below contains a set of recommended lints to

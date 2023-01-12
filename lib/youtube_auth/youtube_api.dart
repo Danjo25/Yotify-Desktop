@@ -22,7 +22,7 @@ class YFYoutubeApi {
       : _clientId = Config.clientId(),
         _clientSecret = Config.clientSecret();
 
-  Future<void> fetchPlaylists() async {
+  Future<void> getPlaylists() async {
     OAuth2Helper helper = getAuthHelper();
 
     var res = await helper.get(_endpointPlaylists);
