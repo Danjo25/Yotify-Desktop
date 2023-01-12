@@ -2,7 +2,7 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:yotifiy/auth/auth_cubit.dart';
+import 'package:yotifiy/youtube_auth/youtube_auth_cubit.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
 
 const String YotifyLogo = 'assets/images/Yotify_Logo.png';
@@ -24,7 +24,7 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<YFAuthCubit, YFAuthState>(
+    return BlocListener<YFAuthCubit, YFYoutubeAuthState>(
       listener: _authCubitListener,
       child: Scaffold(
         backgroundColor: context.colorTheme.background2,
@@ -35,7 +35,7 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
 
   Future<void> _authCubitListener(
     BuildContext context,
-    YFAuthState state,
+    YFYoutubeAuthState state,
   ) async {
     if (!state.hasError) {
       return;
@@ -98,7 +98,7 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
   }
 
   void onPressed() {
-    context.read<YFAuthCubit>().loginSpotify();
+    context.read<YFAuthCubit>().login();
   }
 
   Widget _buildLogo() {

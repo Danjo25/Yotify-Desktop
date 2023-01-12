@@ -32,7 +32,6 @@ class TnsHttpClient with Logger {
 
     final route = '$_apiUrl$path';
     final http.BaseRequest request;
-    final isMultipart = body is Map<String, dynamic>;
 
     final r = http.Request(method, Uri.parse(route));
     _addBody(r, body);
