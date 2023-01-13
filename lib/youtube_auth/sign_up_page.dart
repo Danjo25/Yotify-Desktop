@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart' as cupertino;
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yotifiy/overview_page/overview_page.dart';
 import 'package:yotifiy/youtube_auth/youtube_auth_cubit.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
 
@@ -37,6 +39,11 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
     BuildContext context,
     YFYoutubeAuthState state,
   ) async {
+    if (state.isLoading) {
+      Navigator.of(context).push(
+        cupertino.CupertinoPageRoute(builder: (context) => YFOverviewPage()),
+      );
+    }
     if (!state.hasError) {
       return;
     }
@@ -97,9 +104,7 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
     );
   }
 
-  void onPressed() {
-    context.read<YFAuthCubit>().login();
-  }
+  void onPressed() => context.read<YFAuthCubit>().login();
 
   Widget _buildLogo() {
     return Center(

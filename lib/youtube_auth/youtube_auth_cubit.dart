@@ -30,10 +30,20 @@ class YFAuthCubit extends Cubit<YFYoutubeAuthState> with Logger {
   Future<void> login() async {
     try {
       emit(state.copyWith(isLoading: true));
+
       await _youtubeApi.login();
-      emit(state.copyWith(isAuthenticated: true, isLoading: false));
+
+      emit(state.copyWith(
+        isAuthenticated: true,
+        isLoading: false,
+      ));
     } catch (e, stack) {
-      emit(state.copyWith(isAuthenticated: false, isLoading: false));
+      emit(state.copyWith(
+        isAuthenticated: false,
+        isLoading: false,
+        error: e,
+      ));
+
       logError(e, stack);
     }
   }
