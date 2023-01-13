@@ -24,6 +24,7 @@ class YFMediaItem {
 
 @JsonSerializable()
 class YFPlaylist {
+  final String id;
   final String name;
   final String description;
   final String playlistURL;
@@ -31,6 +32,7 @@ class YFPlaylist {
   final List<YFMediaItem> mediaItems;
 
   YFPlaylist({
+    this.id = '',
     this.name = '',
     this.description = '',
     this.playlistURL = '',
