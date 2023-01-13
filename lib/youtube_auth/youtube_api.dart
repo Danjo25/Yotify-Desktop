@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:oauth2_client/access_token_response.dart';
 import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 import 'package:oauth2_client/google_oauth2_client.dart';
@@ -27,16 +28,27 @@ class YFYoutubeApi {
       : _clientId = Config.clientId(),
         _clientSecret = Config.clientSecret();
 
-  Future<void> getPlaylists() async {
-    OAuth2Helper helper = getAuthHelper();
+  OAuth2Helper get _authHelper {
+    var helper = OAuth2Helper(
+      GoogleOAuth2Client(
+          redirectUri: _redirectUri, customUriScheme: _uriScheme),
+      grantType: OAuth2Helper.authorizationCode,
+      clientId: _clientId,
+      clientSecret: _clientSecret,
+      scopes: _scopes,
+    );
 
-    var res = await helper.get(_endpointPlaylists);
+    return helper;
+  }
+
+  Future<void> getPlaylists() async {
+    var res = await _authHelper.get(_endpointPlaylists);
 
     print(res.body);
   }
 
   Future<YFUserInfo> fetchUserInfo() async {
-    var res = await getAuthHelper().get(_endpointUserInfo);
+    var res = await _authHelper.get(_endpointUserInfo);
 
     var data = jsonDecode(res.body);
 
@@ -48,24 +60,10 @@ class YFYoutubeApi {
     );
   }
 
-  Future<void> fetchToken() async {
-    OAuth2Helper helper = getAuthHelper();
-
-    var res = await helper.fetchToken();
-    print(res);
-  }
-
-  OAuth2Helper getAuthHelper() {
-    var helper = OAuth2Helper(
-      GoogleOAuth2Client(
-          redirectUri: _redirectUri, customUriScheme: _uriScheme),
-      grantType: OAuth2Helper.authorizationCode,
-      clientId: _clientId,
-      clientSecret: _clientSecret,
-      scopes: _scopes,
-    );
-
-    return helper;
+  Future<void> login() async {
+    AccessTokenResponse? token = await _authHelper.getToken();
+    String tokenString = token?.accessToken ?? '';
+    print('Token: $tokenString');
   }
 
   Future<void> debugToken() async {
