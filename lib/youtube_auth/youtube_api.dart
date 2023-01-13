@@ -130,6 +130,10 @@ class YFYoutubeApi {
     print('Token: $tokenString');
   }
 
+  Future<void> logout() async {
+    await _authHelper.removeAllTokens();
+  }
+
   Future<void> debugToken() async {
     var client = OAuth2Client(
         authorizeUrl: _authUrl,
