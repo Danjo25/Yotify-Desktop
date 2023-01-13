@@ -8,6 +8,7 @@ import 'package:yotifiy/config.dart';
 import 'package:yotifiy/playlist/playlist_model.dart';
 import 'package:yotifiy/user/user_info.dart';
 
+// TODO: move class location
 class YFYoutubeApi {
   final String _redirectUri = 'http://localhost:42069/callback';
   final String _uriScheme = 'http://localhost:42069';
@@ -24,6 +25,8 @@ class YFYoutubeApi {
       'https://www.googleapis.com/youtube/v3/playlists?part=snippet&mine=true';
   final String _endpointPlaylistItems =
       'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet';
+  final String _endpointSearch =
+      'https://www.googleapis.com/youtube/v3/search?part=snippet&safeSearch=none';
   final String _endpointUserInfo =
       'https://www.googleapis.com/oauth2/v1/userinfo?alt=json';
 
@@ -90,25 +93,51 @@ class YFYoutubeApi {
         continue;
       }
 
-      var id = item['snippet']?['resourceId']?['videoId'] ?? '';
-      var playlistId = item['snippet']?['playlistId'] ?? '';
-
-      YFMediaItem mediaItem = YFMediaItem(
-        id: id,
-        name: item['snippet']?['title'] ?? '',
-        description: item['snippet']?['description'] ?? '',
-        mediaImageURL: item['snippet']?['thumbnails']?['default']?['url'] ?? '',
-        mediaURL: (id != '')
-            ? 'https://music.youtube.com/watch?v=$id&list=$playlistId'
-            : '',
-      );
-
-      print(mediaItem.toJson());
-
-      mediaItems.add(mediaItem);
+      mediaItems.add(_buildMediaItem(item));
     }
 
     return mediaItems;
+  }
+
+  Future<List<YFMediaItem>> search(String query) async {
+    List<YFMediaItem> results = <YFMediaItem>[];
+
+    var res = await _authHelper.get('$_endpointSearch&q=$query');
+
+    var items = jsonDecode(res.body)['items'] ?? [];
+
+    for (var item in items) {
+      if (item['kind'] != 'youtube#searchResult') {
+        continue;
+      }
+
+      results.add(_buildMediaItem(item));
+    }
+
+    return results;
+  }
+
+  YFMediaItem _buildMediaItem(item) {
+    var playlistId = item['snippet']?['playlistId'] ?? '';
+    var id = item['snippet']?['resourceId']?['videoId'] ?? '';
+
+    if (id == '') {
+      id = item['id']?['videoId'] ?? '';
+    }
+
+    YFMediaItem mediaItem = YFMediaItem(
+      id: id,
+      name: item['snippet']?['title'] ?? '',
+      description: item['snippet']?['description'] ?? '',
+      mediaImageURL: item['snippet']?['thumbnails']?['default']?['url'] ?? '',
+      mediaURL: (id != '')
+          ? 'https://music.youtube.com/watch?v=$id&list=$playlistId'
+          : '',
+    );
+
+    print(mediaItem.toJson());
+
+    return mediaItem;
   }
 
   Future<YFUserInfo> fetchUserInfo() async {
