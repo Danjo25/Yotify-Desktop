@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
 import 'package:yotifiy/core/theme/text.dart';
 
-class YFOverviewPage extends StatefulWidget {
-  const YFOverviewPage({super.key});
+class YFHomePage extends StatefulWidget {
+  const YFHomePage({super.key});
 
   @override
-  State<YFOverviewPage> createState() => _YFOverviewPageState();
+  State<YFHomePage> createState() => _YFHomePageState();
 }
 
-class _YFOverviewPageState extends State<YFOverviewPage> {
+class _YFHomePageState extends State<YFHomePage> {
   final textTheme = YFTextTheme();
-  PageName currentPage = PageName.homePage;
+  PageName currentPage = PageName.overview;
 
   @override
   void initState() {
@@ -39,7 +39,7 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
         _YFNavigationButton(
           text: 'Home',
           currentSelectedPage: currentPage,
-          pageName: PageName.homePage,
+          pageName: PageName.overview,
           onPressed: _changePage,
         ),
         _YFNavigationButton(
@@ -67,14 +67,14 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
       });
 
   final Map<PageName, Widget> _pages = {
-    PageName.homePage: Container(),
+    PageName.overview: Container(),
     PageName.playlistPage: Container(),
     PageName.importPage: Container(),
   };
 }
 
 enum PageName {
-  homePage,
+  overview,
   playlistPage,
   importPage,
 }
