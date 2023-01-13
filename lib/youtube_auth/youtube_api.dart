@@ -5,6 +5,7 @@ import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 import 'package:oauth2_client/google_oauth2_client.dart';
 import 'package:yotifiy/config.dart';
+import 'package:yotifiy/playlist/playlist_model.dart';
 import 'package:yotifiy/user/user_info.dart';
 
 class YFYoutubeApi {
@@ -20,7 +21,7 @@ class YFYoutubeApi {
   final String _clientSecret;
 
   final String _endpointPlaylists =
-      'https://www.googleapis.com/youtube/v3/playlists?mine=true';
+      'https://www.googleapis.com/youtube/v3/playlists?part=snippet&mine=true';
   final String _endpointUserInfo =
       'https://www.googleapis.com/oauth2/v1/userinfo?alt=json';
 
@@ -41,10 +42,32 @@ class YFYoutubeApi {
     return helper;
   }
 
-  Future<void> getPlaylists() async {
+  Future<List<YFPlaylist>> fetchPlaylists() async {
     var res = await _authHelper.get(_endpointPlaylists);
+    var items = jsonDecode(res.body)['items'] ?? [];
 
-    print(res.body);
+    List<YFPlaylist> playlists = <YFPlaylist>[];
+
+    for (var item in items) {
+      if (item['kind'] != 'youtube#playlist') {
+        continue;
+      }
+
+      var id = item['id'] ?? '';
+
+      YFPlaylist playlist = YFPlaylist(
+        id: item['id'] ?? '',
+        name: item['snippet']?['title'] ?? '',
+        description: item['snippet']?['description'] ?? '',
+        thumbnailURL: item['snippet']?['thumbnails']?['default']?['url'] ?? '',
+        playlistURL:
+            (id != '') ? 'https://music.youtube.com/playlist?list=$id' : '',
+      );
+
+      print(playlist.toJson());
+    }
+
+    return playlists;
   }
 
   Future<YFUserInfo> fetchUserInfo() async {
