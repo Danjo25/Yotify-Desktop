@@ -1,5 +1,6 @@
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
+import 'package:yotifiy/core/build_context_extension.dart';
 import 'package:yotifiy/core/theme/text.dart';
 
 class YFOverviewPage extends StatefulWidget {
@@ -11,12 +12,13 @@ class YFOverviewPage extends StatefulWidget {
 
 class _YFOverviewPageState extends State<YFOverviewPage> {
   final textTheme = YFTextTheme();
+  PageName currentPage = PageName.homePage;
 
   @override
   void initState() {
     super.initState();
     DesktopWindow.setMinWindowSize(const Size(1600, 1200));
-    DesktopWindow.setMaxWindowSize(const Size(2800, 2400));
+    DesktopWindow.resetMaxWindowSize();
   }
 
   @override
@@ -24,8 +26,8 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
     return Scaffold(
         body: Row(
       children: [
-        _buildNavigationBar(context),
-        _buildOverview(),
+        Flexible(flex: 1, child: _buildNavigationBar(context)),
+        Flexible(flex: 5, child: _buildOverview()),
       ],
     ));
   }
@@ -34,16 +36,81 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
     return Column(
       children: [
         Text('YOTIFY', style: textTheme.headline1),
-        TextButton(
-            onPressed: () => _navigateToPage(0),
-            child: Text('Home', style: textTheme.body1))
+        _YFNavigationButton(
+          text: 'Home',
+          currentSelectedPage: currentPage,
+          pageName: PageName.homePage,
+          onPressed: _changePage,
+        ),
+        _YFNavigationButton(
+          text: 'Playlists',
+          currentSelectedPage: currentPage,
+          pageName: PageName.playlistPage,
+          onPressed: _changePage,
+        ),
+        _YFNavigationButton(
+          text: 'Import',
+          currentSelectedPage: currentPage,
+          pageName: PageName.importPage,
+          onPressed: _changePage,
+        ),
       ],
     );
   }
 
   Widget _buildOverview() {
-    return Container();
+    return _pages[currentPage] ?? const Text('Something went wrong...');
   }
 
-  void _navigateToPage(int index) {}
+  void _changePage(PageName pageName) => setState(() {
+        currentPage = pageName;
+      });
+
+  final Map<PageName, Widget> _pages = {
+    PageName.homePage: Container(),
+    PageName.playlistPage: Container(),
+    PageName.importPage: Container(),
+  };
+}
+
+enum PageName {
+  homePage,
+  playlistPage,
+  importPage,
+}
+
+class _YFNavigationButton extends StatefulWidget {
+  final String text;
+  final PageName currentSelectedPage;
+  final PageName pageName;
+  final Function(PageName) onPressed;
+
+  const _YFNavigationButton({
+    super.key,
+    required this.text,
+    required this.currentSelectedPage,
+    required this.pageName,
+    required this.onPressed,
+  });
+
+  @override
+  State<_YFNavigationButton> createState() => _YFNavigationButtonState();
+}
+
+class _YFNavigationButtonState extends State<_YFNavigationButton> {
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => widget.onPressed(widget.pageName),
+      child: Container(
+        alignment: Alignment.center,
+        width: double.infinity,
+        color: widget.currentSelectedPage == widget.pageName
+            ? context.colorTheme.background1
+            : null,
+        height: context.spaceTheme.rem * 4,
+        child: Text(widget.text, style: context.textTheme.body1),
+      ),
+    );
+  }
 }
