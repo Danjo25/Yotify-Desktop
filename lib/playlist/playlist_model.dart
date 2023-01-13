@@ -4,12 +4,14 @@ part 'playlist_model.g.dart';
 
 @JsonSerializable()
 class YFMediaItem {
+  final String id;
   final String name;
   final String description;
   final String mediaImageURL;
   final String mediaURL;
 
   YFMediaItem({
+    this.id = '',
     this.name = '',
     this.description = '',
     this.mediaImageURL = '',
