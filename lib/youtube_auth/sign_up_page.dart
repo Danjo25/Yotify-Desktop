@@ -39,7 +39,7 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
     BuildContext context,
     YFYoutubeAuthState state,
   ) async {
-    if (state.isLoading) {
+    if (state.isAuthenticated) {
       Navigator.of(context).push(
         cupertino.CupertinoPageRoute(builder: (context) => YFOverviewPage()),
       );
