@@ -22,6 +22,8 @@ class YFYoutubeApi {
 
   final String _endpointPlaylists =
       'https://www.googleapis.com/youtube/v3/playlists?part=snippet&mine=true';
+  final String _endpointPlaylistItems =
+      'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet';
   final String _endpointUserInfo =
       'https://www.googleapis.com/oauth2/v1/userinfo?alt=json';
 
@@ -55,19 +57,58 @@ class YFYoutubeApi {
 
       var id = item['id'] ?? '';
 
+      List<YFMediaItem> mediaItems = await fetchPlaylistItems(id);
+
       YFPlaylist playlist = YFPlaylist(
-        id: item['id'] ?? '',
+        id: id,
         name: item['snippet']?['title'] ?? '',
         description: item['snippet']?['description'] ?? '',
         thumbnailURL: item['snippet']?['thumbnails']?['default']?['url'] ?? '',
         playlistURL:
             (id != '') ? 'https://music.youtube.com/playlist?list=$id' : '',
+        mediaItems: mediaItems,
       );
 
       print(playlist.toJson());
+
+      playlists.add(playlist);
     }
 
     return playlists;
+  }
+
+  Future<List<YFMediaItem>> fetchPlaylistItems(String playlistId) async {
+    List<YFMediaItem> mediaItems = <YFMediaItem>[];
+
+    var res =
+        await _authHelper.get('$_endpointPlaylistItems&playlistId=$playlistId');
+
+    var items = jsonDecode(res.body)['items'] ?? [];
+
+    for (var item in items) {
+      if (item['kind'] != 'youtube#playlistItem') {
+        continue;
+      }
+
+      var id = item['snippet']?['resourceId']?['videoId'] ?? '';
+      var playlistId = item['snippet']?['playlistId'] ?? '';
+
+      YFMediaItem mediaItem = YFMediaItem(
+        id: id,
+        name: item['snippet']?['title'] ?? '',
+        description: item['snippet']?['description'] ?? '',
+        mediaImageURL: item['snippet']?['thumbnails']?['default']?['url'] ?? '',
+        mediaURL: (id != '')
+            ? 'https://music.youtube.com/watch?v=$id&list=$playlistId'
+            : '',
+      );
+
+      print(mediaItem.toJson());
+
+      mediaItems.add(mediaItem);
+    }
+
+    return mediaItems;
   }
 
   Future<YFUserInfo> fetchUserInfo() async {
