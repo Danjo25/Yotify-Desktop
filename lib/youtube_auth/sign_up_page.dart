@@ -3,7 +3,7 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:yotifiy/overview_page/overview_page.dart';
+import 'package:yotifiy/home_page/home_page.dart';
 import 'package:yotifiy/youtube_auth/youtube_auth_cubit.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
 
@@ -20,12 +20,13 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
   @override
   void initState() {
     super.initState();
-    DesktopWindow.setMinWindowSize(const Size(800, 600));
-    DesktopWindow.setMaxWindowSize(const Size(1400, 1200));
+    WidgetsBinding.instance.addPostFrameCallback((_) => _setSize());
   }
 
   @override
   Widget build(BuildContext context) {
+    print(context.screenSize.width);
+    print(context.screenSize.height);
     return BlocListener<YFAuthCubit, YFYoutubeAuthState>(
       listener: _authCubitListener,
       child: Scaffold(
@@ -33,6 +34,26 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
         body: _buildLoginCard(),
       ),
     );
+  }
+
+  Future<void> _setSize() async {
+    final screenHeight = context.screenSize.height * 2;
+    final screenWidth = context.screenSize.width * 2;
+
+    await DesktopWindow.setWindowSize(
+      Size(
+        screenWidth * 0.5,
+        screenHeight * 0.7,
+      ),
+    );
+
+    await DesktopWindow.setMinWindowSize(
+      Size(
+        screenWidth * 0.4,
+        screenHeight * 0.6,
+      ),
+    );
+    await DesktopWindow.resetMaxWindowSize();
   }
 
   Future<void> _authCubitListener(
