@@ -18,15 +18,7 @@ class YFSignUpPage extends StatefulWidget {
 
 class _YFSignUpPageState extends State<YFSignUpPage> {
   @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _setSize());
-  }
-
-  @override
   Widget build(BuildContext context) {
-    print(context.screenSize.width);
-    print(context.screenSize.height);
     return BlocListener<YFAuthCubit, YFYoutubeAuthState>(
       listener: _authCubitListener,
       child: Scaffold(
@@ -34,26 +26,6 @@ class _YFSignUpPageState extends State<YFSignUpPage> {
         body: _buildLoginCard(),
       ),
     );
-  }
-
-  Future<void> _setSize() async {
-    final screenHeight = context.screenSize.height * 2;
-    final screenWidth = context.screenSize.width * 2;
-
-    await DesktopWindow.setWindowSize(
-      Size(
-        screenWidth * 0.5,
-        screenHeight * 0.7,
-      ),
-    );
-
-    await DesktopWindow.setMinWindowSize(
-      Size(
-        screenWidth * 0.4,
-        screenHeight * 0.6,
-      ),
-    );
-    await DesktopWindow.resetMaxWindowSize();
   }
 
   Future<void> _authCubitListener(
