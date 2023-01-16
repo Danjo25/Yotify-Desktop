@@ -30,8 +30,8 @@ class YFYoutubeApi {
       'https://www.googleapis.com/oauth2/v1/userinfo?alt=json';
 
   YFYoutubeApi()
-      : _clientId = Config.clientId(),
-        _clientSecret = Config.clientSecret();
+      : _clientId = Config.googleClientId(),
+        _clientSecret = Config.googleClientSecret();
 
   OAuth2Helper get _authHelper {
     var helper = OAuth2Helper(
