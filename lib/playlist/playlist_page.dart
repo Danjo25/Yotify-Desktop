@@ -26,7 +26,7 @@ class _YFPlaylistPageState extends State<YFPlaylistPage> {
       builder: (context, state) {
         return state.isLoading
             ? const Center(child: CircularProgressIndicator())
-            : _buildList(state.data);
+            : Padding(padding: EdgeInsets.all(context.spaceTheme.padding4), child: _buildList(state.data));
       },
     );
   }
