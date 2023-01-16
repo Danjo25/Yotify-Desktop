@@ -12,6 +12,7 @@ import 'package:yotifiy/login/login_page.dart';
 import 'package:yotifiy/core/storage.dart';
 import 'package:yotifiy/core/theme/data.dart';
 import 'package:yotifiy/core/theme/widget.dart';
+import 'package:yotifiy/playlist/playlist_cubit.dart';
 
 Future<void> main() async {
   await dotenv.load();
@@ -25,6 +26,7 @@ Future<void> main() async {
 final _youtubeApi = YFYoutubeApi();
 final _storage = YFStorage();
 final _authCubit = YFAuthCubit(_youtubeApi);
+final _playlistCubit = YFPlaylistCubit(_youtubeApi);
 
 class YFApp extends StatefulWidget {
   static final mainRouteKey = GlobalKey<NavigatorState>();
@@ -42,6 +44,7 @@ class _YFAppState extends State<YFApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => _authCubit),
+        BlocProvider(create: (_) => _playlistCubit),
       ],
       child: MaterialApp(
         navigatorObservers: [
