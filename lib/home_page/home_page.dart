@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
 import 'package:yotifiy/core/theme/text.dart';
 import 'package:yotifiy/overview_page/overview_page.dart';
+import 'package:yotifiy/playlist/playlist_page.dart';
 
 class YFHomePage extends StatefulWidget {
   const YFHomePage({super.key});
@@ -75,7 +76,7 @@ class _YFHomePageState extends State<YFHomePage> {
     PageName.overview: YFOverviewPage(
       onPageChange: (pageName) => _changePage(pageName),
     ),
-    PageName.playlistPage: Container(),
+    PageName.playlistPage: const YFPlaylistPage(),
     PageName.importPage: Container(),
   };
 }
