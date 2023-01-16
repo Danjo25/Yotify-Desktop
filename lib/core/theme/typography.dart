@@ -6,7 +6,7 @@ abstract class YFTypography {
   static const YFTextTheme standard = YFTextTheme.raw(
     headline1: TextStyle(
       fontFamily: 'Poppins',
-      fontSize: 24,
+      fontSize: 40,
       fontWeight: FontWeight.bold,
       color: YFColorTheme.white,
     ),
@@ -42,7 +42,7 @@ abstract class YFTypography {
     ),
     body2: TextStyle(
       fontFamily: 'Poppins',
-      fontSize: 14,
+      fontSize: 20,
       fontWeight: FontWeight.w400,
       color: YFColorTheme.white,
     ),

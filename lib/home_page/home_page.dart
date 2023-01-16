@@ -2,6 +2,7 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
 import 'package:yotifiy/core/theme/text.dart';
+import 'package:yotifiy/overview_page/overview_page.dart';
 
 class YFHomePage extends StatefulWidget {
   const YFHomePage({super.key});
@@ -59,15 +60,21 @@ class _YFHomePageState extends State<YFHomePage> {
   }
 
   Widget _buildOverview() {
-    return _pages[currentPage] ?? const Text('Something went wrong...');
+    return _pages[currentPage] ??
+        Text(
+          'Something went wrong...',
+          style: context.textTheme.headline2,
+        );
   }
 
   void _changePage(PageName pageName) => setState(() {
         currentPage = pageName;
       });
 
-  final Map<PageName, Widget> _pages = {
-    PageName.overview: Container(),
+  late final Map<PageName, Widget> _pages = {
+    PageName.overview: YFOverviewPage(
+      onPageChange: (pageName) => _changePage(pageName),
+    ),
     PageName.playlistPage: Container(),
     PageName.importPage: Container(),
   };
