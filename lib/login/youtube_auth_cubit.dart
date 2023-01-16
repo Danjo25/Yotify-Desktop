@@ -1,4 +1,4 @@
-import 'package:yotifiy/youtube_auth/youtube_api.dart';
+import 'package:yotifiy/core/api/youtube_api.dart';
 import 'package:yotifiy/core/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';

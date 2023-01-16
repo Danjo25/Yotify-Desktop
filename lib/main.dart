@@ -6,9 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:yotifiy/core/theme/color.dart';
-import 'package:yotifiy/youtube_auth/youtube_api.dart';
-import 'package:yotifiy/youtube_auth/youtube_auth_cubit.dart';
-import 'package:yotifiy/youtube_auth/sign_up_page.dart';
+import 'package:yotifiy/core/api/youtube_api.dart';
+import 'package:yotifiy/login/youtube_auth_cubit.dart';
+import 'package:yotifiy/login/login_page.dart';
 import 'package:yotifiy/core/storage.dart';
 import 'package:yotifiy/core/theme/data.dart';
 import 'package:yotifiy/core/theme/widget.dart';
@@ -58,7 +58,7 @@ class _YFAppState extends State<YFApp> {
               data: YFThemeData(
                 colorTheme: YFColorTheme.dark,
               ),
-              child: const YFSignUpPage(),
+              child: const YFLoginPage(),
             ),
           ),
         ),

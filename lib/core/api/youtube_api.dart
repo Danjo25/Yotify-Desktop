@@ -24,6 +24,8 @@ class YFYoutubeApi {
       'https://www.googleapis.com/youtube/v3/playlists?part=snippet&mine=true';
   final String _endpointPlaylistItems =
       'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet';
+  final String _endpointSearch =
+      'https://www.googleapis.com/youtube/v3/search?part=snippet&safeSearch=none';
   final String _endpointUserInfo =
       'https://www.googleapis.com/oauth2/v1/userinfo?alt=json';
 
@@ -90,25 +92,51 @@ class YFYoutubeApi {
         continue;
       }
 
-      var id = item['snippet']?['resourceId']?['videoId'] ?? '';
-      var playlistId = item['snippet']?['playlistId'] ?? '';
-
-      YFMediaItem mediaItem = YFMediaItem(
-        id: id,
-        name: item['snippet']?['title'] ?? '',
-        description: item['snippet']?['description'] ?? '',
-        mediaImageURL: item['snippet']?['thumbnails']?['default']?['url'] ?? '',
-        mediaURL: (id != '')
-            ? 'https://music.youtube.com/watch?v=$id&list=$playlistId'
-            : '',
-      );
-
-      print(mediaItem.toJson());
-
-      mediaItems.add(mediaItem);
+      mediaItems.add(_buildMediaItem(item));
     }
 
     return mediaItems;
+  }
+
+  Future<List<YFMediaItem>> search(String query) async {
+    List<YFMediaItem> results = <YFMediaItem>[];
+
+    var res = await _authHelper.get('$_endpointSearch&q=$query');
+
+    var items = jsonDecode(res.body)['items'] ?? [];
+
+    for (var item in items) {
+      if (item['kind'] != 'youtube#searchResult') {
+        continue;
+      }
+
+      results.add(_buildMediaItem(item));
+    }
+
+    return results;
+  }
+
+  YFMediaItem _buildMediaItem(item) {
+    var playlistId = item['snippet']?['playlistId'] ?? '';
+    var id = item['snippet']?['resourceId']?['videoId'] ?? '';
+
+    if (id == '') {
+      id = item['id']?['videoId'] ?? '';
+    }
+
+    YFMediaItem mediaItem = YFMediaItem(
+      id: id,
+      name: item['snippet']?['title'] ?? '',
+      description: item['snippet']?['description'] ?? '',
+      mediaImageURL: item['snippet']?['thumbnails']?['default']?['url'] ?? '',
+      mediaURL: (id != '')
+          ? 'https://music.youtube.com/watch?v=$id&list=$playlistId'
+          : '',
+    );
+
+    print(mediaItem.toJson());
+
+    return mediaItem;
   }
 
   Future<YFUserInfo> fetchUserInfo() async {
@@ -128,6 +156,10 @@ class YFYoutubeApi {
     AccessTokenResponse? token = await _authHelper.getToken();
     String tokenString = token?.accessToken ?? '';
     print('Token: $tokenString');
+  }
+
+  Future<void> logout() async {
+    await _authHelper.removeAllTokens();
   }
 
   Future<void> debugToken() async {

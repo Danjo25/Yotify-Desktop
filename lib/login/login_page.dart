@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yotifiy/home_page/home_page.dart';
-import 'package:yotifiy/youtube_auth/youtube_auth_cubit.dart';
+import 'package:yotifiy/login/youtube_auth_cubit.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
 
 const String YotifyLogo = 'assets/images/Yotify_Logo.png';
 
-class YFSignUpPage extends StatefulWidget {
-  const YFSignUpPage({super.key});
+class YFLoginPage extends StatefulWidget {
+  const YFLoginPage({super.key});
 
   @override
-  State<YFSignUpPage> createState() => _YFSignUpPageState();
+  State<YFLoginPage> createState() => _YFLoginPageState();
 }
 
-class _YFSignUpPageState extends State<YFSignUpPage> {
+class _YFLoginPageState extends State<YFLoginPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<YFAuthCubit, YFYoutubeAuthState>(
