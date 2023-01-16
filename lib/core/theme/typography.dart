@@ -36,15 +36,22 @@ abstract class YFTypography {
     ),
     body1: TextStyle(
       fontFamily: 'Poppins',
-      fontSize: 14,
+      fontSize: 40,
       fontWeight: FontWeight.w400,
       color: YFColorTheme.white,
     ),
     body2: TextStyle(
       fontFamily: 'Poppins',
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: YFColorTheme.white,
+    ),
+    body3: TextStyle(
+      fontFamily: 'Poppins',
       fontSize: 12,
       fontWeight: FontWeight.w400,
       color: YFColorTheme.white,
+      
     ),
     subtitle: TextStyle(
       fontFamily: 'Poppins',

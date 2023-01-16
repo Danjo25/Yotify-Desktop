@@ -34,7 +34,9 @@ class _YFLoginPageState extends State<YFLoginPage> {
   ) async {
     if (state.isAuthenticated) {
       Navigator.of(context).push(
-        cupertino.CupertinoPageRoute(builder: (context) => YFHomePage()),
+        cupertino.CupertinoPageRoute(
+          builder: (context) => YFHomePage(),
+        ),
       );
     }
     if (!state.hasError) {

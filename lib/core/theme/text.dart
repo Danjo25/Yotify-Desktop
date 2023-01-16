@@ -9,6 +9,7 @@ class YFTextTheme {
   final TextStyle headline5;
   final TextStyle body1;
   final TextStyle body2;
+  final TextStyle body3;
   final TextStyle subtitle;
 
   const YFTextTheme.raw({
@@ -19,6 +20,7 @@ class YFTextTheme {
     required this.headline5,
     required this.body1,
     required this.body2,
+    required this.body3,
     required this.subtitle,
   });
 
@@ -32,6 +34,7 @@ class YFTextTheme {
     TextStyle? headline5,
     TextStyle? body1,
     TextStyle? body2,
+    TextStyle? body3,
     TextStyle? button,
     TextStyle? subtitle,
   }) =>
@@ -43,6 +46,7 @@ class YFTextTheme {
         headline5: headline5 ?? this.headline5,
         body1: body1 ?? this.body1,
         body2: body2 ?? this.body2,
+        body3: body3 ?? this.body3,
         subtitle: subtitle ?? this.subtitle,
       );
 }

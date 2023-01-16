@@ -108,7 +108,6 @@ class _YFNavigationButtonState extends State<_YFNavigationButton> {
         color: widget.currentSelectedPage == widget.pageName
             ? context.colorTheme.background1
             : null,
-        height: context.spaceTheme.rem * 4,
         child: Text(widget.text, style: context.textTheme.body1),
       ),
     );
