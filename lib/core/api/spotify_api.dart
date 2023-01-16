@@ -17,8 +17,8 @@ class YFSpotifyApi {
       : _clientId = Config.spotifyClientId(),
         _clientSecret = Config.spotifyClientSecret();
 
-  Future<YFPlaylist> getPlaylist() async {
-    var playlistId = '2cnKM0Cb4uL8bhQowdybmw';
+  Future<YFPlaylist> getPlaylist(String id) async {
+    var playlistId = id;
     var res = await _authHelper.get(_endpointPlaylist + playlistId);
     var data = jsonDecode(res.body); // TODO: throw exception if invalid status
 
