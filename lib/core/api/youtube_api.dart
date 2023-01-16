@@ -8,7 +8,6 @@ import 'package:yotifiy/config.dart';
 import 'package:yotifiy/playlist/playlist_model.dart';
 import 'package:yotifiy/user/user_info.dart';
 
-// TODO: move class location
 class YFYoutubeApi {
   final String _redirectUri = 'http://localhost:42069/callback';
   final String _uriScheme = 'http://localhost:42069';
