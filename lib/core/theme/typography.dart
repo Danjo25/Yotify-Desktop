@@ -51,7 +51,6 @@ abstract class YFTypography {
       fontSize: 12,
       fontWeight: FontWeight.w400,
       color: YFColorTheme.white,
-      
     ),
     subtitle: TextStyle(
       fontFamily: 'Poppins',

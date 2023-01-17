@@ -1,13 +1,11 @@
 import 'package:flutter/cupertino.dart' as cupertino;
-import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:yotifiy/core/assets.dart';
 import 'package:yotifiy/home_page/home_page.dart';
 import 'package:yotifiy/login/youtube_auth_cubit.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
-
-const String YotifyLogo = 'assets/images/Yotify_Logo.png';
 
 class YFLoginPage extends StatefulWidget {
   const YFLoginPage({super.key});
@@ -35,7 +33,7 @@ class _YFLoginPageState extends State<YFLoginPage> {
     if (state.isAuthenticated) {
       Navigator.of(context).push(
         cupertino.CupertinoPageRoute(
-          builder: (context) => YFHomePage(),
+          builder: (context) => const YFHomePage(),
         ),
       );
     }
@@ -104,7 +102,7 @@ class _YFLoginPageState extends State<YFLoginPage> {
   Widget _buildLogo() {
     return Center(
       child: Image.asset(
-        YotifyLogo,
+        YFAssets.yotifyLogo,
         height: 150,
         fit: BoxFit.fitHeight,
       ),

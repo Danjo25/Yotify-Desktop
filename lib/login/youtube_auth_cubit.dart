@@ -7,7 +7,6 @@ part 'youtube_auth_cubit.g.dart';
 
 @CopyWith()
 class YFYoutubeAuthState {
-  final String? data;
   final bool isLoading;
   final dynamic error;
   final bool isAuthenticated;
@@ -15,7 +14,6 @@ class YFYoutubeAuthState {
   bool get hasError => error != null;
 
   YFYoutubeAuthState({
-    this.data,
     this.isLoading = false,
     this.isAuthenticated = false,
     this.error,

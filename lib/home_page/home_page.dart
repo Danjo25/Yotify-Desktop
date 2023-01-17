@@ -94,7 +94,6 @@ class _YFNavigationButton extends StatefulWidget {
   final Function(PageName) onPressed;
 
   const _YFNavigationButton({
-    super.key,
     required this.text,
     required this.currentSelectedPage,
     required this.pageName,

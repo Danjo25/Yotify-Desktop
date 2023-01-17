@@ -33,8 +33,6 @@ class YFSpotifyApi {
       mediaItems: mediaItems,
     );
 
-    print(playlist.toJson());
-
     return playlist;
   }
 
@@ -54,8 +52,6 @@ class YFSpotifyApi {
       );
 
       mediaItems.add(mediaItem);
-
-      print(mediaItem.toJson());
     }
 
     return mediaItems;

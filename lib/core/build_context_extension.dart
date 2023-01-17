@@ -26,6 +26,6 @@ extension YFBuildContextExtension on BuildContext {
   YFColorTheme get colorTheme => theme.colorTheme;
 
   YFSpaceTheme get spaceTheme => theme.spaceTheme;
-  
+
   Size get screenSize => MediaQuery.of(this).size;
 }

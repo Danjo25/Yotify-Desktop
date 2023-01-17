@@ -71,8 +71,6 @@ class YFYoutubeApi {
         mediaItems: mediaItems,
       );
 
-      print(playlist.toJson());
-
       playlists.add(playlist);
     }
 
@@ -134,8 +132,6 @@ class YFYoutubeApi {
           : '',
     );
 
-    print(mediaItem.toJson());
-
     return mediaItem;
   }
 
@@ -155,7 +151,6 @@ class YFYoutubeApi {
   Future<void> login() async {
     AccessTokenResponse? token = await _authHelper.getToken();
     String tokenString = token?.accessToken ?? '';
-    print('Token: $tokenString');
   }
 
   Future<void> logout() async {
@@ -164,17 +159,16 @@ class YFYoutubeApi {
 
   Future<void> debugToken() async {
     var client = OAuth2Client(
-        authorizeUrl: _authUrl,
-        tokenUrl: _tokenUrl,
-        redirectUri: _redirectUri,
-        customUriScheme: _uriScheme);
+      authorizeUrl: _authUrl,
+      tokenUrl: _tokenUrl,
+      redirectUri: _redirectUri,
+      customUriScheme: _uriScheme,
+    );
 
     var tknResp = await client.getTokenWithAuthCodeFlow(
-        clientId: _clientId, scopes: _scopes, clientSecret: _clientSecret);
-
-    print(tknResp.httpStatusCode);
-    print(tknResp.error);
-    print(tknResp.expirationDate);
-    print(tknResp.scope);
+      clientId: _clientId,
+      scopes: _scopes,
+      clientSecret: _clientSecret,
+    );
   }
 }
