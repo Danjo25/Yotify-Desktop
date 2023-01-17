@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart' as cupertino;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,6 +8,7 @@ import 'package:yotifiy/core/build_context_extension.dart';
 import 'package:yotifiy/core/list_extension.dart';
 import 'package:yotifiy/playlist/playlist_cubit.dart';
 import 'package:yotifiy/playlist/playlist_model.dart';
+import 'package:yotifiy/playlist/playlist_songs_page.dart';
 
 class YFPlaylistPage extends StatefulWidget {
   const YFPlaylistPage({super.key});
@@ -53,44 +56,58 @@ class _YFPlaylistItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 300,
-      width: 300,
-      decoration: BoxDecoration(
-        color: context.colorTheme.background1,
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            context.colorTheme.background1,
-            context.colorTheme.background3,
-          ],
+    return InkWell(
+      onTap: () => Navigator.of(context).push(
+        cupertino.CupertinoPageRoute(
+          builder: (context) => YFPlaylistSongsPage(
+            playlist: playlist,
+          ),
         ),
-        borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
-      child: Padding(
-        padding: EdgeInsets.all(context.spaceTheme.padding2),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 200,
-              width: 200,
-              child: Image.network(
-                playlist.thumbnailURL,
-                fit: BoxFit.fill,
-                errorBuilder: (_, __, ___) => Image.asset(
-                  YFAssets.defaultPlaylist,
+      child: Container(
+        height: 300,
+        width: 300,
+        decoration: BoxDecoration(
+          color: context.colorTheme.background1,
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              context.colorTheme.background1,
+              context.colorTheme.background3,
+            ],
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(context.spaceTheme.padding2),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Align(
+                alignment: Alignment.center,
+                child: SizedBox(
+                  height: 200,
+                  width: 200,
+                  child: Image.network(
+                    playlist.thumbnailURL,
+                    fit: BoxFit.fill,
+                    errorBuilder: (_, __, ___) => Image.asset(
+                      YFAssets.defaultPlaylist,
+                    ),
+                  ),
                 ),
               ),
-            ),
-            Text(playlist.name, style: context.textTheme.headline2),
-            Text(
-              playlist.description,
-              style: context.textTheme.body2,
-              maxLines: 3,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
+              Text(playlist.name, style: context.textTheme.headline2),
+              Text(
+                playlist.description,
+                style: context.textTheme.body2,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text('${playlist.mediaItems.length} Titel')
+            ]..addSeparator(context.spaceTheme.fixedSpace(1.h)),
+          ),
         ),
       ),
     );
