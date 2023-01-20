@@ -17,12 +17,12 @@ class YFSpotifyApi {
       : _clientId = Config.spotifyClientId(),
         _clientSecret = Config.spotifyClientSecret();
 
-  Future<YFPlaylist> getPlaylist(String id) async {
+  Future<YFPlaylist> fetchPlaylist(String id) async {
     var playlistId = id;
     var res = await _authHelper.get(_endpointPlaylist + playlistId);
     var data = jsonDecode(res.body); // TODO: throw exception if invalid status
 
-    List<YFMediaItem> mediaItems = await fetchPlaylistItems(playlistId);
+    List<YFMediaItem> mediaItems = await _fetchPlaylistItems(playlistId);
 
     YFPlaylist playlist = YFPlaylist(
       PlaylistType.spotify,
@@ -37,7 +37,7 @@ class YFSpotifyApi {
     return playlist;
   }
 
-  Future<List<YFMediaItem>> fetchPlaylistItems(String playlistId) async {
+  Future<List<YFMediaItem>> _fetchPlaylistItems(String playlistId) async {
     List<YFMediaItem> mediaItems = <YFMediaItem>[];
 
     var res = await _authHelper.get('$_endpointPlaylist$playlistId/tracks');
@@ -45,11 +45,16 @@ class YFSpotifyApi {
     var items = data['items'] ?? [];
 
     for (var item in items) {
+      List artists = item['track']?['artists'] ?? [];
+      Iterable<String> artistNames =
+          artists.map((artist) => artist['name'] ?? '');
+
       YFMediaItem mediaItem = YFMediaItem(
         id: item['track']?['id'] ?? '',
         name: item['track']?['name'] ?? '',
         mediaURL: item['track']?['external_urls']?['spotify'] ?? '',
         mediaImageURL: item['track']?['album']?['images']?[0]?['url'] ?? '',
+        owner: artistNames.join(', '),
       );
 
       mediaItems.add(mediaItem);
