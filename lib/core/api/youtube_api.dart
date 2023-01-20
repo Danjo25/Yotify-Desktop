@@ -103,6 +103,11 @@ class YFYoutubeApi {
     var res = await _authHelper
         .get('$_endpointSearch?part=snippet&safeSearch=none&q=$query');
 
+    if (res.statusCode != 200) {
+      // TODO: extract to method and reuse
+      String errorMessage = jsonDecode(res.body)['error']?['message'] ?? '';
+      throw Exception('Could not fetch results. (Error: $errorMessage)');
+    }
     var items = jsonDecode(res.body)['items'] ?? [];
 
     for (var item in items) {
@@ -137,6 +142,40 @@ class YFYoutubeApi {
     );
 
     return mediaItem;
+  }
+
+  Future<void> createPlaylist(YFPlaylist youtubePlaylist) async {
+    var res = await _authHelper.post('$_endpointPlaylists?part=snippet',
+        body: jsonEncode({
+          "snippet": {
+            "title": youtubePlaylist.name,
+            "description": youtubePlaylist.description
+          }
+        }));
+
+    var playlistData = jsonDecode(res.body);
+    var playlistId = playlistData['id'] ?? '';
+
+    if (playlistId == '') {
+      return;
+    }
+
+    for (var item in youtubePlaylist.mediaItems) {
+      await _insertVideoItemIntoPlaylist(playlistId, item.id);
+    }
+  }
+
+  Future<void> _insertVideoItemIntoPlaylist(playlistId, String videoId) async {
+    await _authHelper.post('$_endpointPlaylistItems?part=snippet',
+        body: jsonEncode({
+          "snippet": {
+            "playlistId": playlistId,
+            "resourceId": {
+              "videoId": videoId,
+              "kind": "youtube#video",
+            }
+          }
+        }));
   }
 
   Future<YFUserInfo> fetchUserInfo() async {
