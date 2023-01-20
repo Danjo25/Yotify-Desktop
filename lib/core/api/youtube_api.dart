@@ -130,6 +130,8 @@ class YFYoutubeApi {
       mediaURL: (id != '')
           ? 'https://music.youtube.com/watch?v=$id&list=$playlistId'
           : '',
+      publishDate: item['contentDetails']?['videoPublishedAt'] ?? '',
+      owner: item['snippet']?['videoOwnerChannelTitle'] ?? '',
     );
 
     return mediaItem;
@@ -149,26 +151,10 @@ class YFYoutubeApi {
   }
 
   Future<void> login() async {
-    AccessTokenResponse? token = await _authHelper.getToken();
-    String tokenString = token?.accessToken ?? '';
+    await _authHelper.getToken();
   }
 
   Future<void> logout() async {
     await _authHelper.removeAllTokens();
-  }
-
-  Future<void> debugToken() async {
-    var client = OAuth2Client(
-      authorizeUrl: _authUrl,
-      tokenUrl: _tokenUrl,
-      redirectUri: _redirectUri,
-      customUriScheme: _uriScheme,
-    );
-
-    var tknResp = await client.getTokenWithAuthCodeFlow(
-      clientId: _clientId,
-      scopes: _scopes,
-      clientSecret: _clientSecret,
-    );
   }
 }

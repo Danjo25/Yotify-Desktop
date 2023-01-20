@@ -9,6 +9,8 @@ class YFMediaItem {
   final String description;
   final String mediaImageURL;
   final String mediaURL;
+  final String owner;
+  final String publishDate;
 
   YFMediaItem({
     this.id = '',
@@ -16,6 +18,8 @@ class YFMediaItem {
     this.description = '',
     this.mediaImageURL = '',
     this.mediaURL = '',
+    this.owner = '',
+    this.publishDate = '',
   });
 
   factory YFMediaItem.fromJson(Map<String, dynamic> json) =>
