@@ -21,13 +21,12 @@ class YFYoutubeApi {
   final String _clientSecret;
 
   final String _endpointPlaylists =
-      'https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResults=50&mine=true';
+      'https://www.googleapis.com/youtube/v3/playlists';
   final String _endpointPlaylistItems =
-      'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50';
-  final String _endpointSearch =
-      'https://www.googleapis.com/youtube/v3/search?part=snippet&safeSearch=none';
+      'https://www.googleapis.com/youtube/v3/playlistItems';
+  final String _endpointSearch = 'https://www.googleapis.com/youtube/v3/search';
   final String _endpointUserInfo =
-      'https://www.googleapis.com/oauth2/v1/userinfo?alt=json';
+      'https://www.googleapis.com/oauth2/v1/userinfo';
 
   YFYoutubeApi()
       : _clientId = Config.googleClientId(),
@@ -47,7 +46,8 @@ class YFYoutubeApi {
   }
 
   Future<List<YFPlaylist>> fetchPlaylists() async {
-    var res = await _authHelper.get(_endpointPlaylists);
+    var res = await _authHelper
+        .get('$_endpointPlaylists?part=snippet&maxResults=50&mine=true');
     var items = jsonDecode(res.body)['items'] ?? [];
 
     List<YFPlaylist> playlists = <YFPlaylist>[];
@@ -81,8 +81,8 @@ class YFYoutubeApi {
   Future<List<YFMediaItem>> fetchPlaylistItems(String playlistId) async {
     List<YFMediaItem> mediaItems = <YFMediaItem>[];
 
-    var res =
-        await _authHelper.get('$_endpointPlaylistItems&playlistId=$playlistId');
+    var res = await _authHelper.get(
+        '$_endpointPlaylistItems?part=snippet&maxResults=50&playlistId=$playlistId');
 
     var items = jsonDecode(res.body)['items'] ?? [];
 
@@ -100,7 +100,8 @@ class YFYoutubeApi {
   Future<List<YFMediaItem>> search(String query) async {
     List<YFMediaItem> results = <YFMediaItem>[];
 
-    var res = await _authHelper.get('$_endpointSearch&q=$query');
+    var res = await _authHelper
+        .get('$_endpointSearch?part=snippet&safeSearch=none&q=$query');
 
     var items = jsonDecode(res.body)['items'] ?? [];
 
@@ -139,7 +140,7 @@ class YFYoutubeApi {
   }
 
   Future<YFUserInfo> fetchUserInfo() async {
-    var res = await _authHelper.get(_endpointUserInfo);
+    var res = await _authHelper.get('$_endpointUserInfo?alt=json');
 
     var data = jsonDecode(res.body);
 
