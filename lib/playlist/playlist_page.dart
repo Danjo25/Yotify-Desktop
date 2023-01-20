@@ -8,7 +8,7 @@ import 'package:yotifiy/core/build_context_extension.dart';
 import 'package:yotifiy/core/list_extension.dart';
 import 'package:yotifiy/playlist/playlist_cubit.dart';
 import 'package:yotifiy/playlist/playlist_model.dart';
-import 'package:yotifiy/playlist/playlist_songs_page.dart';
+import 'package:yotifiy/playlist/playlist_details_page.dart';
 
 class YFPlaylistPage extends StatefulWidget {
   const YFPlaylistPage({super.key});
@@ -29,10 +29,17 @@ class _YFPlaylistPageState extends State<YFPlaylistPage> {
     return BlocBuilder<YFPlaylistCubit, YFPlaylistState>(
       builder: (context, state) {
         return state.isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(
+                child: SizedBox(
+                  width: 50.w,
+                  height: 175.h,
+                  child: CircularProgressIndicator(),
+                ),
+              )
             : Padding(
                 padding: EdgeInsets.all(context.spaceTheme.padding4),
-                child: _buildList(state.data));
+                child: _buildList(state.data),
+              );
       },
     );
   }
@@ -52,21 +59,24 @@ class _YFPlaylistPageState extends State<YFPlaylistPage> {
 class _YFPlaylistItem extends StatelessWidget {
   final YFPlaylist playlist;
 
-  const _YFPlaylistItem({super.key, required this.playlist});
+  const _YFPlaylistItem({
+    super.key,
+    required this.playlist,
+  });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Navigator.of(context).push(
         cupertino.CupertinoPageRoute(
-          builder: (context) => YFPlaylistSongsPage(
+          builder: (context) => YFPlaylistDetailsPage(
             playlist: playlist,
           ),
         ),
       ),
       child: Container(
-        height: 300,
-        width: 300,
+        height: 300.h,
+        width: 300.w,
         decoration: BoxDecoration(
           color: context.colorTheme.background1,
           gradient: LinearGradient(
@@ -87,11 +97,10 @@ class _YFPlaylistItem extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: SizedBox(
-                  height: 200,
-                  width: 200,
+                  height: 150.h,
                   child: Image.network(
                     playlist.thumbnailURL,
-                    fit: BoxFit.fill,
+                    fit: BoxFit.fitHeight,
                     errorBuilder: (_, __, ___) => Image.asset(
                       YFAssets.defaultPlaylist,
                     ),

@@ -46,20 +46,21 @@ class YFOverviewPage extends StatelessWidget {
       onTap: () => onPageChange(PageName.playlistPage),
       child: Container(
         color: Colors.red,
-        width: 400,
-        height: 200,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Playlist',
-              style: context.textTheme.headline1,
-            ),
-            Text(
-              'View and manage all your YouTube playlists',
-              style: context.textTheme.body2,
-            ),
-          ],
+        child: Padding(
+          padding: EdgeInsets.all(context.spaceTheme.padding4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Playlist',
+                style: context.textTheme.headline1,
+              ),
+              Text(
+                'View and manage all your YouTube playlists',
+                style: context.textTheme.body2,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -70,20 +71,21 @@ class YFOverviewPage extends StatelessWidget {
       onTap: () => onPageChange(PageName.importPage),
       child: Container(
         color: Colors.green,
-        width: 300,
-        height: 200,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Import',
-              style: context.textTheme.headline1,
-            ),
-            Text(
-              'Import new Playlists from Spotify into your account',
-              style: context.textTheme.body2,
-            ),
-          ],
+        child: Padding(
+          padding:  EdgeInsets.all(context.spaceTheme.padding4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Import',
+                style: context.textTheme.headline1,
+              ),
+              Text(
+                'Import new Playlists from Spotify into your account',
+                style: context.textTheme.body2,
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -91,13 +93,16 @@ class YFOverviewPage extends StatelessWidget {
 
   Widget _buildRecentlyAddedPlaylists(BuildContext context) {
     // TODO: Add correct recent playlists
-    return Row(
-      children: [
-        Container(width: 100, height: 100, color: Colors.pink),
-        Container(width: 100, height: 100, color: Colors.pink),
-        Container(width: 100, height: 100, color: Colors.pink),
-        Container(width: 100, height: 100, color: Colors.pink),
-      ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          Container(width: 100.w, height: 100.h, color: Colors.pink),
+          Container(width: 100.w, height: 100.h, color: Colors.pink),
+          Container(width: 100.w, height: 100.h, color: Colors.pink),
+          Container(width: 100.w, height: 100.h, color: Colors.pink),
+        ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
+      ),
     );
   }
 }

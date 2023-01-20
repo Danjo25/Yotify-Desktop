@@ -80,18 +80,18 @@ class _YFLoginPageState extends State<YFLoginPage> {
 
   Widget _buildLoginButton() {
     return Container(
-      width: 100,
+      width: 100.w,
       decoration: BoxDecoration(
           border: Border.all(
-            width: 0.5,
+            width: 0.5.w,
             color: Colors.white,
           ),
-          borderRadius: const BorderRadius.all(Radius.circular(10))),
+          borderRadius: BorderRadius.all(Radius.circular(10.r))),
       child: TextButton(
         onPressed: onPressed,
-        child: const Text(
+        child: Text(
           'Login',
-          style: TextStyle(color: Colors.white, fontSize: 30),
+          style: TextStyle(color: Colors.white, fontSize: 10.sp),
         ),
       ),
     );

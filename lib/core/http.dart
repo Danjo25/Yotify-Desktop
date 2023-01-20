@@ -6,7 +6,7 @@ import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:yotifiy/core/api_exception.dart';
 import 'package:yotifiy/core/logger.dart';
 
-class TnsHttpClient with Logger {
+class YFHttpClient with Logger {
   String _apiUrl = '';
   String token = '';
 

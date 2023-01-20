@@ -2,6 +2,7 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
 import 'package:yotifiy/core/theme/text.dart';
+import 'package:yotifiy/import_page/import_page.dart';
 import 'package:yotifiy/overview_page/overview_page.dart';
 import 'package:yotifiy/playlist/playlist_page.dart';
 
@@ -77,7 +78,7 @@ class _YFHomePageState extends State<YFHomePage> {
       onPageChange: (pageName) => _changePage(pageName),
     ),
     PageName.playlistPage: const YFPlaylistPage(),
-    PageName.importPage: Container(),
+    PageName.importPage: const YFImportPage(),
   };
 }
 
