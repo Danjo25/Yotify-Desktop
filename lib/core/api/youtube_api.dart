@@ -21,9 +21,9 @@ class YFYoutubeApi {
   final String _clientSecret;
 
   final String _endpointPlaylists =
-      'https://www.googleapis.com/youtube/v3/playlists?part=snippet&mine=true';
+      'https://www.googleapis.com/youtube/v3/playlists?part=snippet&maxResults=50&mine=true';
   final String _endpointPlaylistItems =
-      'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet';
+      'https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50';
   final String _endpointSearch =
       'https://www.googleapis.com/youtube/v3/search?part=snippet&safeSearch=none';
   final String _endpointUserInfo =
