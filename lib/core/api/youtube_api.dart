@@ -62,6 +62,7 @@ class YFYoutubeApi {
       List<YFMediaItem> mediaItems = await fetchPlaylistItems(id);
 
       YFPlaylist playlist = YFPlaylist(
+        PlaylistType.youtube,
         id: id,
         name: item['snippet']?['title'] ?? '',
         description: item['snippet']?['description'] ?? '',

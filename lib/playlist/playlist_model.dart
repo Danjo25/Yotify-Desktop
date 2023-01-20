@@ -36,8 +36,10 @@ class YFPlaylist {
   final String playlistURL;
   final String thumbnailURL;
   final List<YFMediaItem> mediaItems;
+  final PlaylistType playlistType;
 
-  YFPlaylist({
+  YFPlaylist(
+    this.playlistType, {
     this.id = '',
     this.name = '',
     this.description = '',
@@ -51,3 +53,5 @@ class YFPlaylist {
 
   Map<String, dynamic> toJson() => _$YFPlaylistToJson(this);
 }
+
+enum PlaylistType { youtube, spotify }

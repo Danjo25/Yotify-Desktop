@@ -25,6 +25,7 @@ class YFSpotifyApi {
     List<YFMediaItem> mediaItems = await fetchPlaylistItems(playlistId);
 
     YFPlaylist playlist = YFPlaylist(
+      PlaylistType.spotify,
       id: data['id'] ?? '',
       playlistURL: data['external_urls']?['spotify'] ?? '',
       thumbnailURL: data['images']?[0]?['url'] ?? '',
