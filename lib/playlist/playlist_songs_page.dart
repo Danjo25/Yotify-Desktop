@@ -26,7 +26,7 @@ class YFPlaylistSongsPage extends StatelessWidget {
         },
         icon: Icon(
           Icons.arrow_back_ios,
-          color: context.colorTheme.background1,
+          color: context.colorTheme.hint,
           size: 30,
         ),
       )),
