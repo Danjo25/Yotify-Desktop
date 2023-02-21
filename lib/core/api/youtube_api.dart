@@ -5,6 +5,7 @@ import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 import 'package:oauth2_client/google_oauth2_client.dart';
 import 'package:yotifiy/config.dart';
+import 'package:yotifiy/core/api/cache/search_cache.dart';
 import 'package:yotifiy/playlist/playlist_model.dart';
 import 'package:yotifiy/user/user_info.dart';
 
@@ -98,6 +99,13 @@ class YFYoutubeApi {
   }
 
   Future<List<YFMediaItem>> search(String query) async {
+    var cachedSearchResult = await SearchCache.getAsync(query);
+
+    if (cachedSearchResult.isNotEmpty) {
+      print('Loaded cached search result for: $query');
+      return cachedSearchResult;
+    }
+
     List<YFMediaItem> results = <YFMediaItem>[];
 
     var res = await _authHelper
@@ -117,6 +125,8 @@ class YFYoutubeApi {
 
       results.add(_buildMediaItem(item));
     }
+
+    SearchCache.storeAsync(query, results);
 
     return results;
   }
