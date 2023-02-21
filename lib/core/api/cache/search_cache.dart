@@ -10,19 +10,19 @@ class SearchCache {
     return File('${directory.path}\\yf_search.json');
   }
 
-  static Future<YFMediaItem?> getAsync(String query) async {
+  static Future<List<YFMediaItem>> getAsync(String query) async {
     final File cacheFile = await _cacheFile;
 
-    Map<String, YFMediaItem> cachedModels =
+    Map<String, List<YFMediaItem>> cachedModels =
         await _loadCachedSearchResults(cacheFile);
 
-    return cachedModels[query];
+    return cachedModels[query] ?? [];
   }
 
-  static storeAsync(String query, YFMediaItem mediaItem) async {
+  static storeAsync(String query, List<YFMediaItem> mediaItem) async {
     final File cacheFile = await _cacheFile;
 
-    Map<String, YFMediaItem> cachedSearchResults =
+    Map<String, List<YFMediaItem>> cachedSearchResults =
         await _loadCachedSearchResults(cacheFile);
 
     cachedSearchResults[query] = mediaItem;
@@ -30,16 +30,22 @@ class SearchCache {
     cacheFile.writeAsString(jsonEncode(cachedSearchResults));
   }
 
-  static Future<Map<String, YFMediaItem>> _loadCachedSearchResults(
+  static Future<Map<String, List<YFMediaItem>>> _loadCachedSearchResults(
       File cacheFile) async {
-    Map<String, YFMediaItem> mediaItems = {};
+    Map<String, List<YFMediaItem>> mediaItems = {};
 
     try {
       var data = jsonDecode(await cacheFile.readAsString());
       var dataMap = Map<String, dynamic>.from(data);
 
-      dataMap.forEach(
-          (key, value) => mediaItems[key] = YFMediaItem.fromJson(value));
+      for (MapEntry entry in dataMap.entries) {
+        var query = entry.key;
+        mediaItems[query] = [];
+
+        for (var item in (entry.value as List<dynamic>)) {
+          mediaItems[query]?.add(YFMediaItem.fromJson(item));
+        }
+      }
     } on Exception {
       print('Failed to load cached search results');
 
