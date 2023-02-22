@@ -41,7 +41,6 @@ class YFImportPlaylistCubit extends Cubit<YFImportPlaylistState> with Logger {
 
       emit(state.copyWith(data: r, isLoading: false));
     } catch (e, stack) {
-      print('ERROOOOOOOOOOOOOOOOOOOOOR');
       emit(state.copyWith(isLoading: false));
       logError(e, stack);
     }
@@ -53,7 +52,6 @@ class YFImportPlaylistCubit extends Cubit<YFImportPlaylistState> with Logger {
       await _playlistImporter.import(playlist);
       emit(state.copyWith(isLoading: false));
     } catch (e, stack) {
-      print('ERROOOOOOOOOOOOOOOOOOOOOR (Import)');
       emit(state.copyWith(isLoading: false));
       logError(e, stack);
     }
