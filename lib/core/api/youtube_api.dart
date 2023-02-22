@@ -1,15 +1,15 @@
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
-import 'package:oauth2_client/access_token_response.dart';
-import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 import 'package:oauth2_client/google_oauth2_client.dart';
 import 'package:yotifiy/config.dart';
 import 'package:yotifiy/core/api/cache/search_cache.dart';
+import 'package:yotifiy/core/logger.dart';
 import 'package:yotifiy/playlist/playlist_model.dart';
 import 'package:yotifiy/user/user_info.dart';
 
-class YFYoutubeApi {
+class YFYoutubeApi with Logger {
   final String _redirectUri = 'http://localhost:42069/callback';
   final String _uriScheme = 'http://localhost:42069';
   final List<String> _scopes = [
@@ -52,30 +52,16 @@ class YFYoutubeApi {
     var res = await _authHelper.get(
       '$_endpointPlaylists?part=snippet&maxResults=50&mine=true',
     );
-    var items = jsonDecode(res.body)['items'] ?? [];
+    var playlistsJson = jsonDecode(res.body)['items'] ?? [];
 
-    List<YFPlaylist> playlists = <YFPlaylist>[];
+    List<YFPlaylist> playlists = [];
 
-    for (var item in items) {
+    for (var item in playlistsJson) {
       if (item['kind'] != 'youtube#playlist') {
         continue;
       }
 
-      var id = item['id'] ?? '';
-
-      List<YFMediaItem> mediaItems = await fetchPlaylistItems(id);
-
-      YFPlaylist playlist = YFPlaylist(
-        PlaylistType.youtube,
-        id: id,
-        name: item['snippet']?['title'] ?? '',
-        description: item['snippet']?['description'] ?? '',
-        thumbnailURL: item['snippet']?['thumbnails']?['default']?['url'] ?? '',
-        playlistURL:
-            (id != '') ? 'https://music.youtube.com/playlist?list=$id' : '',
-        mediaItems: mediaItems,
-      );
-
+      final playlist = await _convertJsonToPlaylist(item);
       playlists.add(playlist);
     }
 
@@ -86,16 +72,17 @@ class YFYoutubeApi {
     List<YFMediaItem> mediaItems = <YFMediaItem>[];
 
     var res = await _authHelper.get(
-        '$_endpointPlaylistItems?part=snippet&maxResults=50&playlistId=$playlistId');
+      '$_endpointPlaylistItems?part=snippet&maxResults=50&playlistId=$playlistId',
+    );
 
-    var items = jsonDecode(res.body)['items'] ?? [];
+    var mediaItemsJson = jsonDecode(res.body)['items'] ?? [];
 
-    for (var item in items) {
+    for (var item in mediaItemsJson) {
       if (item['kind'] != 'youtube#playlistItem') {
         continue;
       }
 
-      mediaItems.add(_buildMediaItem(item));
+      mediaItems.add(_convertJsonToMediaItem(item));
     }
 
     return mediaItems;
@@ -105,7 +92,8 @@ class YFYoutubeApi {
     var cachedSearchResult = await SearchCache.getAsync(query);
 
     if (cachedSearchResult.isNotEmpty) {
-      print('Loaded cached search result for: $query');
+      log('Loaded cached search result for: $query');
+
       return cachedSearchResult;
     }
 
@@ -126,35 +114,12 @@ class YFYoutubeApi {
         continue;
       }
 
-      results.add(_buildMediaItem(item));
+      results.add(_convertJsonToMediaItem(item));
     }
 
     SearchCache.storeAsync(query, results);
 
     return results;
-  }
-
-  YFMediaItem _buildMediaItem(item) {
-    var playlistId = item['snippet']?['playlistId'] ?? '';
-    var id = item['snippet']?['resourceId']?['videoId'] ?? '';
-
-    if (id == '') {
-      id = item['id']?['videoId'] ?? '';
-    }
-
-    YFMediaItem mediaItem = YFMediaItem(
-      id: id,
-      name: item['snippet']?['title'] ?? '',
-      description: item['snippet']?['description'] ?? '',
-      mediaImageURL: item['snippet']?['thumbnails']?['default']?['url'] ?? '',
-      mediaURL: (id != '')
-          ? 'https://music.youtube.com/watch?v=$id&list=$playlistId'
-          : '',
-      publishDate: item['contentDetails']?['videoPublishedAt'] ?? '',
-      owner: item['snippet']?['videoOwnerChannelTitle'] ?? '',
-    );
-
-    return mediaItem;
   }
 
   Future<void> createPlaylist(YFPlaylist youtubePlaylist) async {
@@ -172,11 +137,10 @@ class YFYoutubeApi {
     if (playlistId == '') {
       return;
     }
-
-    print("Creating playlist $playlistId");
+    log("Creating playlist $playlistId");
     for (var item in youtubePlaylist.mediaItems) {
       await _insertVideoItemIntoPlaylist(playlistId, item.id);
-      print("Added video ${item.id}");
+      log("Added video ${item.id}");
     }
   }
 
@@ -212,5 +176,60 @@ class YFYoutubeApi {
 
   Future<void> logout() async {
     await _authHelper.removeAllTokens();
+  }
+
+  Future<YFPlaylist> _convertJsonToPlaylist(dynamic playlistJson) async {
+    var id = playlistJson['id'] ?? '';
+
+    List<YFMediaItem> mediaItems = await fetchPlaylistItems(id);
+
+    return YFPlaylist(
+      PlaylistType.youtube,
+      id: id,
+      name: playlistJson['snippet']?['title'] ?? '',
+      description: playlistJson['snippet']?['description'] ?? '',
+      thumbnailURL:
+          playlistJson['snippet']?['thumbnails']?['default']?['url'] ?? '',
+      playlistURL:
+          (id != '') ? 'https://music.youtube.com/playlist?list=$id' : '',
+      mediaItems: mediaItems,
+    );
+  }
+
+  YFMediaItem _convertJsonToMediaItem(json) {
+    dynamic itemSnippet = json['snippet'];
+
+    var playlistId = itemSnippet?['playlistId'] ?? '';
+    var mediaItemId = itemSnippet?['resourceId']?['videoId'] ?? '';
+
+    if (mediaItemId == '') {
+      mediaItemId = json['id']?['videoId'] ?? '';
+    }
+
+    final publishDate = itemSnippet?['publishedAt'] ?? '';
+
+    YFMediaItem mediaItem = YFMediaItem(
+      id: mediaItemId,
+      name: itemSnippet?['title'] ?? '',
+      description: itemSnippet?['description'] ?? '',
+      mediaImageURL: itemSnippet?['thumbnails']?['default']?['url'] ?? '',
+      mediaURL: (mediaItemId != '')
+          ? 'https://music.youtube.com/watch?v=$mediaItemId&list=$playlistId'
+          : '',
+      publishDate: _formatDate(publishDate),
+      owner: itemSnippet?['videoOwnerChannelTitle'] ?? '',
+    );
+
+    return mediaItem;
+  }
+
+  String _formatDate(String? date) {
+    if (date == null) {
+      return '-';
+    }
+
+    DateTime dateTime = DateTime.parse(date);
+
+    return DateFormat('dd. MMMM yyyy').format(dateTime);
   }
 }

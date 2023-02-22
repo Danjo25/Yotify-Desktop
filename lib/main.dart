@@ -32,8 +32,10 @@ final _storage = YFStorage();
 final _playlistImporter = YFPlaylistImporter();
 final _authCubit = YFAuthCubit(_youtubeApi);
 final _playlistCubit = YFPlaylistCubit(_youtubeApi);
-final _importPlaylistCubit =
-    YFImportPlaylistCubit(_spotifyApi, _playlistImporter);
+final _importPlaylistCubit = YFImportPlaylistCubit(
+  _spotifyApi,
+  _playlistImporter,
+);
 
 class YFApp extends StatefulWidget {
   static final mainRouteKey = GlobalKey<NavigatorState>();
