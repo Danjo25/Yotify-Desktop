@@ -5,6 +5,7 @@ import 'package:oauth2_client/oauth2_client.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 import 'package:oauth2_client/google_oauth2_client.dart';
 import 'package:yotifiy/config.dart';
+import 'package:yotifiy/core/api/cache/search_cache.dart';
 import 'package:yotifiy/playlist/playlist_model.dart';
 import 'package:yotifiy/user/user_info.dart';
 
@@ -98,11 +99,23 @@ class YFYoutubeApi {
   }
 
   Future<List<YFMediaItem>> search(String query) async {
+    var cachedSearchResult = await SearchCache.getAsync(query);
+
+    if (cachedSearchResult.isNotEmpty) {
+      print('Loaded cached search result for: $query');
+      return cachedSearchResult;
+    }
+
     List<YFMediaItem> results = <YFMediaItem>[];
 
     var res = await _authHelper
         .get('$_endpointSearch?part=snippet&safeSearch=none&q=$query');
 
+    if (res.statusCode != 200) {
+      // TODO: extract to method and reuse
+      String errorMessage = jsonDecode(res.body)['error']?['message'] ?? '';
+      throw Exception('Could not fetch results. (Error: $errorMessage)');
+    }
     var items = jsonDecode(res.body)['items'] ?? [];
 
     for (var item in items) {
@@ -112,6 +125,8 @@ class YFYoutubeApi {
 
       results.add(_buildMediaItem(item));
     }
+
+    SearchCache.storeAsync(query, results);
 
     return results;
   }
@@ -137,6 +152,40 @@ class YFYoutubeApi {
     );
 
     return mediaItem;
+  }
+
+  Future<void> createPlaylist(YFPlaylist youtubePlaylist) async {
+    var res = await _authHelper.post('$_endpointPlaylists?part=snippet',
+        body: jsonEncode({
+          "snippet": {
+            "title": youtubePlaylist.name,
+            "description": youtubePlaylist.description
+          }
+        }));
+
+    var playlistData = jsonDecode(res.body);
+    var playlistId = playlistData['id'] ?? '';
+
+    if (playlistId == '') {
+      return;
+    }
+
+    for (var item in youtubePlaylist.mediaItems) {
+      await _insertVideoItemIntoPlaylist(playlistId, item.id);
+    }
+  }
+
+  Future<void> _insertVideoItemIntoPlaylist(playlistId, String videoId) async {
+    await _authHelper.post('$_endpointPlaylistItems?part=snippet',
+        body: jsonEncode({
+          "snippet": {
+            "playlistId": playlistId,
+            "resourceId": {
+              "videoId": videoId,
+              "kind": "youtube#video",
+            }
+          }
+        }));
   }
 
   Future<YFUserInfo> fetchUserInfo() async {
