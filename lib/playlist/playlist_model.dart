@@ -9,6 +9,8 @@ class YFMediaItem {
   final String description;
   final String mediaImageURL;
   final String mediaURL;
+  final String owner;
+  final String publishDate;
 
   YFMediaItem({
     this.id = '',
@@ -16,6 +18,8 @@ class YFMediaItem {
     this.description = '',
     this.mediaImageURL = '',
     this.mediaURL = '',
+    this.owner = '',
+    this.publishDate = '',
   });
 
   factory YFMediaItem.fromJson(Map<String, dynamic> json) =>
@@ -32,8 +36,10 @@ class YFPlaylist {
   final String playlistURL;
   final String thumbnailURL;
   final List<YFMediaItem> mediaItems;
+  final PlaylistType playlistType;
 
-  YFPlaylist({
+  YFPlaylist(
+    this.playlistType, {
     this.id = '',
     this.name = '',
     this.description = '',
@@ -47,3 +53,5 @@ class YFPlaylist {
 
   Map<String, dynamic> toJson() => _$YFPlaylistToJson(this);
 }
+
+enum PlaylistType { youtube, spotify }
