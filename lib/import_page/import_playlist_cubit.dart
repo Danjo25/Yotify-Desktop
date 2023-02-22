@@ -29,13 +29,11 @@ class YFImportPlaylistCubit extends Cubit<YFImportPlaylistState> with Logger {
   YFImportPlaylistCubit(this._spotifyApi, this._playlistImporter)
       : super(YFImportPlaylistState());
 
-  Future<void> createPlaylist(String id) async {
+  Future<void> createPlaylist(String spotifyPlaylistUrl) async {
     emit(state.copyWith(isLoading: true));
     try {
-      final playlistId = id.substring(
-        id.indexOf('playlist/') + 'playlist/'.length,
-        id.indexOf('?'),
-      );
+      String playlistId = _parsePlaylistId(spotifyPlaylistUrl);
+      emit(state.copyWith(isLoading: false));
       final r = await _spotifyApi.fetchPlaylist(playlistId);
       print('${r.name} - ${r.description} - ${r.mediaItems.length}');
 
@@ -45,6 +43,17 @@ class YFImportPlaylistCubit extends Cubit<YFImportPlaylistState> with Logger {
       emit(state.copyWith(isLoading: false));
       logError(e, stack);
     }
+  }
+
+  String _parsePlaylistId(String spotifyPlaylistUrl) {
+    RegExp regex = RegExp(r'spotify.com/playlist/(\w*)\??');
+    RegExpMatch? match = regex.firstMatch(spotifyPlaylistUrl);
+
+    if (match == null) {
+      throw "Invalid url";
+    }
+
+    return match[1] ?? '';
   }
 
   Future<void> importPlaylist(YFPlaylist playlist) async {
