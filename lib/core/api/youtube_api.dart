@@ -36,7 +36,9 @@ class YFYoutubeApi {
   OAuth2Helper get _authHelper {
     var helper = OAuth2Helper(
       GoogleOAuth2Client(
-          redirectUri: _redirectUri, customUriScheme: _uriScheme),
+        redirectUri: _redirectUri,
+        customUriScheme: _uriScheme,
+      ),
       grantType: OAuth2Helper.authorizationCode,
       clientId: _clientId,
       clientSecret: _clientSecret,
@@ -47,8 +49,9 @@ class YFYoutubeApi {
   }
 
   Future<List<YFPlaylist>> fetchPlaylists() async {
-    var res = await _authHelper
-        .get('$_endpointPlaylists?part=snippet&maxResults=50&mine=true');
+    var res = await _authHelper.get(
+      '$_endpointPlaylists?part=snippet&maxResults=50&mine=true',
+    );
     var items = jsonDecode(res.body)['items'] ?? [];
 
     List<YFPlaylist> playlists = <YFPlaylist>[];
