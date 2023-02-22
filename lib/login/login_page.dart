@@ -55,6 +55,8 @@ class _YFLoginPageState extends State<YFLoginPage> {
         decoration: const BoxDecoration(
           color: Colors.purple,
           gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
               Colors.green,
               Colors.red,

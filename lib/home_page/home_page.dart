@@ -30,7 +30,7 @@ class _YFHomePageState extends State<YFHomePage> {
         body: Row(
       children: [
         Flexible(flex: 1, child: _buildNavigationBar(context)),
-        Flexible(flex: 5, child: _buildOverview()),
+        Flexible(flex: 5, child: _buildCurrentPage()),
       ],
     ));
   }
@@ -61,7 +61,7 @@ class _YFHomePageState extends State<YFHomePage> {
     );
   }
 
-  Widget _buildOverview() {
+  Widget _buildCurrentPage() {
     return _pages[currentPage] ??
         Text(
           'Something went wrong...',

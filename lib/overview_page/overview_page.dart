@@ -32,7 +32,10 @@ class YFOverviewPage extends StatelessWidget {
         SizedBox(
           height: context.spaceTheme.padding5,
         ),
-        Text('Recent Playlists', style: context.textTheme.headline1),
+        Text(
+          'Recent Playlists',
+          style: context.textTheme.headline1,
+        ),
         SizedBox(
           height: context.spaceTheme.padding2,
         ),
@@ -72,7 +75,7 @@ class YFOverviewPage extends StatelessWidget {
       child: Container(
         color: Colors.green,
         child: Padding(
-          padding:  EdgeInsets.all(context.spaceTheme.padding4),
+          padding: EdgeInsets.all(context.spaceTheme.padding4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

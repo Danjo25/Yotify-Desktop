@@ -21,6 +21,7 @@ class _YFPlaylistPageState extends State<YFPlaylistPage> {
   @override
   void initState() {
     super.initState();
+    
     context.read<YFPlaylistCubit>().getYoutubePlaylists();
   }
 
@@ -33,7 +34,7 @@ class _YFPlaylistPageState extends State<YFPlaylistPage> {
                 child: SizedBox(
                   width: 50.w,
                   height: 175.h,
-                  child: CircularProgressIndicator(),
+                  child: const CircularProgressIndicator(),
                 ),
               )
             : Padding(
