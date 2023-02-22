@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:yotifiy/core/api/playlist_importer.dart';
 import 'package:yotifiy/core/api/spotify_api.dart';
 import 'package:yotifiy/core/theme/color.dart';
 import 'package:yotifiy/core/api/youtube_api.dart';
@@ -28,9 +29,11 @@ Future<void> main() async {
 final _youtubeApi = YFYoutubeApi();
 final _spotifyApi = YFSpotifyApi();
 final _storage = YFStorage();
+final _playlistImporter = YFPlaylistImporter();
 final _authCubit = YFAuthCubit(_youtubeApi);
 final _playlistCubit = YFPlaylistCubit(_youtubeApi);
-final _importPlaylistCubit = YFImportPlaylistCubit(_spotifyApi);
+final _importPlaylistCubit =
+    YFImportPlaylistCubit(_spotifyApi, _playlistImporter);
 
 class YFApp extends StatefulWidget {
   static final mainRouteKey = GlobalKey<NavigatorState>();

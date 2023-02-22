@@ -11,9 +11,8 @@ class YFPlaylistImporter {
       : _spotifyApi = YFSpotifyApi(),
         _youtubeApi = YFYoutubeApi();
 
-  Future<YFPlaylist> convertSpotifyPlaylistToYoutube(String spotifyId) async {
-    YFPlaylist spotifyPlaylist = await _spotifyApi.fetchPlaylist(spotifyId);
-
+  Future<YFPlaylist> _convertSpotifyPlaylistToYoutube(
+      YFPlaylist spotifyPlaylist) async {
     List<YFMediaItem> youtubePlaylistItems = [];
     for (var item in spotifyPlaylist.mediaItems) {
       List<YFMediaItem> searchResults =
@@ -32,10 +31,11 @@ class YFPlaylistImporter {
     );
   }
 
-  Future<void> importSpotifyToYoutube(String spotifyPlaylistId) async {
-    YFPlaylist youtubePlaylist =
-        await convertSpotifyPlaylistToYoutube(spotifyPlaylistId);
+  Future<void> import(YFPlaylist playlist) async {
+    if (playlist.playlistType == PlaylistType.spotify) {
+      playlist = await _convertSpotifyPlaylistToYoutube(playlist);
+    }
 
-    _youtubeApi.createPlaylist(youtubePlaylist);
+    await _youtubeApi.createPlaylist(playlist);
   }
 }

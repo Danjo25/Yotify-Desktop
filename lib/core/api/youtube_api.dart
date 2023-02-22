@@ -138,8 +138,10 @@ class YFYoutubeApi with Logger {
       return;
     }
 
+    print("Creating playlist $playlistId");
     for (var item in youtubePlaylist.mediaItems) {
       await _insertVideoItemIntoPlaylist(playlistId, item.id);
+      print("Added video ${item.id}");
     }
   }
 
