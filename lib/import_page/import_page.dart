@@ -91,16 +91,18 @@ class _YFImportPageState extends State<YFImportPage> {
                           onPressed: launchUrl(playlist.playlistURL)),
                       _ImportPageButton(
                         text: 'Import Playlist',
-                        onPressed: () => print('Import'),
+                        onPressed: () => setState(() {
+                          context
+                              .read<YFImportPlaylistCubit>()
+                              .importPlaylist(playlist);
+                        }),
                       ),
                       _ImportPageButton(
                         text: 'Edit Playlist and Import',
                         onPressed: () => Navigator.of(context).push(
                           cupertino.CupertinoPageRoute(
                             builder: (context) => YFPlaylistDetailsPage(
-                              playlist: playlist,
-                              isEditMode: true
-                            ),
+                                playlist: playlist, isEditMode: true),
                           ),
                         ),
                       )
