@@ -45,7 +45,6 @@ class YFApp extends StatefulWidget {
 class _YFAppState extends State<YFApp> {
   @override
   Widget build(BuildContext context) {
-    
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (_) => _authCubit),
