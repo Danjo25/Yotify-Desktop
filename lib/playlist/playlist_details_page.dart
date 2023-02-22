@@ -151,12 +151,12 @@ class YFPlaylistDetailsBody extends StatelessWidget {
               ),
             ),
           ),
-          DataCell(Text('Artist here', style: context.textTheme.body2)),
+          DataCell(Text(e.owner, style: context.textTheme.body2)),
 
           // TODO: Für die Checkboxen in der import settings page dann am besten eine eigene Klasse _DataRowItem
           // TODO: erstellen, damit darin dann das isSelected bool gesetzt werden kann. Anschließend muss die Liste
           // TODO: mit allen isSelected Items in einer Liste gespeichert werden, für die neue Playlist.
-          DataCell(Text('Duration hier', style: context.textTheme.body2)),
+          DataCell(Text(e.publishDate, style: context.textTheme.body2)),
         ],
       );
     }).toList();
