@@ -12,6 +12,7 @@ class YFColorTheme {
   static const green = Color(0xFF00B6AB);
   static const red = Color(0xFFEE7569);
   static const orange = Color(0xFFED9B0C);
+  static const black = Colors.black;
 
   static const YFColorTheme light = YFColorTheme.raw(
     primary: green,
