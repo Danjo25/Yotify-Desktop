@@ -52,65 +52,22 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
   }
 
   Widget _buildPlaylistButton(BuildContext context) {
-    return InkWell(
+    return _OverviewButton(
+      title: 'Playlist',
+      description: 'View and manage all your YouTube playlists',
+      topColor: Colors.red[600]!,
+      bottomColor: Colors.red[300]!,
       onTap: () => widget.onPageChange(PageName.playlistPage),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.red[600]!, Colors.red[300]!],
-          ),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(context.spaceTheme.padding4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Playlist',
-                style: context.textTheme.headline1,
-              ),
-              Text(
-                'View and manage all your YouTube playlists',
-                style: context.textTheme.body2,
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
   Widget _buildImportButton(BuildContext context) {
-    return InkWell(
+    return _OverviewButton(
+      title: 'Import',
+      description: 'Import new Playlists from Spotify into your account',
+      topColor: Colors.green[500]!,
+      bottomColor: Colors.green[300]!,
       onTap: () => widget.onPageChange(PageName.importPage),
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Colors.green[500]!, Colors.green[300]!],
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(context.spaceTheme.padding4),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Import',
-                style: context.textTheme.headline1,
-              ),
-              Text(
-                'Import new Playlists from Spotify into your account',
-                style: context.textTheme.body2,
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
@@ -151,6 +108,55 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
           colors: [Colors.pink[400]!, Colors.pink[200]!],
         ),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
+      ),
+    );
+  }
+}
+
+class _OverviewButton extends StatelessWidget {
+  final String title;
+  final String description;
+  final Function()? onTap;
+  final Color topColor;
+  final Color bottomColor;
+
+  const _OverviewButton({
+    key,
+    required this.title,
+    required this.description,
+    this.onTap,
+    required this.topColor,
+    required this.bottomColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [topColor, bottomColor],
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(context.spaceTheme.padding4),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: context.textTheme.headline1,
+              ),
+              Text(
+                description,
+                style: context.textTheme.body2,
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
