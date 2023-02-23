@@ -31,9 +31,9 @@ class _YFImportPageState extends State<YFImportPage> {
                   decoration: const InputDecoration(
                     hintText: "Paste spotify playlist link here",
                   ),
-                  onSubmitted: (String id) {
+                  onSubmitted: (String url) {
                     setState(() {
-                      context.read<YFImportPlaylistCubit>().createPlaylist(id);
+                      context.read<YFImportPlaylistCubit>().createPlaylist(url);
                     });
                   },
                 ),
