@@ -21,7 +21,7 @@ class _YFPlaylistPageState extends State<YFPlaylistPage> {
   @override
   void initState() {
     super.initState();
-    
+
     context.read<YFPlaylistCubit>().getYoutubePlaylists();
   }
 
@@ -51,18 +51,46 @@ class _YFPlaylistPageState extends State<YFPlaylistPage> {
       mainAxisSpacing: context.spaceTheme.padding2,
       crossAxisSpacing: context.spaceTheme.padding2,
       children: [
-        ...playlists.map((e) => _YFPlaylistItem(playlist: e)),
+        ...playlists.map(
+          (e) => YFPlaylistItem(
+            playlist: e,
+            width: 300.h,
+            height: 300.h,
+            imageHeight: 150.h,
+            boxDecoration: BoxDecoration(
+              color: context.colorTheme.background1,
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  context.colorTheme.background1,
+                  context.colorTheme.background3,
+                ],
+              ),
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+            ),
+          ),
+        ),
       ],
     );
   }
 }
 
-class _YFPlaylistItem extends StatelessWidget {
+class YFPlaylistItem extends StatelessWidget {
   final YFPlaylist playlist;
+  final double width;
+  final double height;
+  final BoxDecoration boxDecoration;
+  final double imageHeight;
+  final int? maxDescriptionTextLines;
 
-  const _YFPlaylistItem({
-    super.key,
+  const YFPlaylistItem({
     required this.playlist,
+    required this.width,
+    required this.height,
+    required this.boxDecoration,
+    required this.imageHeight,
+    this.maxDescriptionTextLines,
   });
 
   @override
@@ -76,20 +104,9 @@ class _YFPlaylistItem extends StatelessWidget {
         ),
       ),
       child: Container(
-        height: 300.h,
-        width: 300.w,
-        decoration: BoxDecoration(
-          color: context.colorTheme.background1,
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              context.colorTheme.background1,
-              context.colorTheme.background3,
-            ],
-          ),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-        ),
+        height: height,
+        width: width,
+        decoration: boxDecoration,
         child: Padding(
           padding: EdgeInsets.all(context.spaceTheme.padding2),
           child: Column(
@@ -98,7 +115,7 @@ class _YFPlaylistItem extends StatelessWidget {
               Align(
                 alignment: Alignment.center,
                 child: SizedBox(
-                  height: 150.h,
+                  height: imageHeight,
                   child: Image.network(
                     playlist.thumbnailURL,
                     fit: BoxFit.fitHeight,
@@ -112,7 +129,7 @@ class _YFPlaylistItem extends StatelessWidget {
               Text(
                 playlist.description,
                 style: context.textTheme.body2,
-                maxLines: 2,
+                maxLines: maxDescriptionTextLines?? 2,
                 overflow: TextOverflow.ellipsis,
               ),
               Text('${playlist.mediaItems.length} Titel')
