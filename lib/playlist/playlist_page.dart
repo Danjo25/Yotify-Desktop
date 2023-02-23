@@ -82,7 +82,6 @@ class YFPlaylistItem extends StatelessWidget {
   final double height;
   final BoxDecoration boxDecoration;
   final double imageHeight;
-  final int? maxDescriptionTextLines;
 
   const YFPlaylistItem({
     required this.playlist,
@@ -90,7 +89,6 @@ class YFPlaylistItem extends StatelessWidget {
     required this.height,
     required this.boxDecoration,
     required this.imageHeight,
-    this.maxDescriptionTextLines,
   });
 
   @override
@@ -129,7 +127,7 @@ class YFPlaylistItem extends StatelessWidget {
               Text(
                 playlist.description,
                 style: context.textTheme.body2,
-                maxLines: maxDescriptionTextLines?? 2,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
               Text('${playlist.mediaItems.length} Titel')
