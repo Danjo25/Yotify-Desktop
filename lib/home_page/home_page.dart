@@ -1,3 +1,4 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,6 +8,8 @@ import 'package:yotifiy/core/theme/text.dart';
 import 'package:yotifiy/import_page/import_page.dart';
 import 'package:yotifiy/overview_page/overview_page.dart';
 import 'package:yotifiy/playlist/playlist_page.dart';
+
+import '../core/window_buttons.dart';
 
 class YFHomePage extends StatefulWidget {
   const YFHomePage({super.key});
@@ -45,6 +48,15 @@ class _YFHomePageState extends State<YFHomePage> {
       color: YFColorTheme.black,
       child: Column(
         children: [
+          Container(
+            alignment: Alignment.topCenter,
+            child: WindowTitleBarBox(
+              child: Row(children: [
+                Expanded(child: MoveWindow()),
+                WindowButtons(),
+              ]),
+            ),
+          ),
           Text('YOTIFY', style: textTheme.headline1),
           context.spaceTheme.fixedSpace(2.h),
           _YFNavigationButton(

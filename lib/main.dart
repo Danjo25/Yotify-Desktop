@@ -1,3 +1,4 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,11 +20,18 @@ import 'package:yotifiy/playlist/playlist_cubit.dart';
 
 Future<void> main() async {
   await dotenv.load();
-  await DesktopWindow.setFullScreen(true);
-  await DesktopWindow.setMinWindowSize(
-    const Size(1000, 800),
-  );
   runApp(const YFApp());
+
+  const initialSize = Size(1200, 800);
+  appWindow.minSize = const Size(800, 600);
+  // appWindow.size = initialSize;
+  appWindow.alignment = Alignment.center;
+  DesktopWindow.setFullScreen(true);
+  DesktopWindow.setMinWindowSize(initialSize);
+
+  doWhenWindowReady(() {
+    appWindow.show();
+  });
 }
 
 final _youtubeApi = YFYoutubeApi();

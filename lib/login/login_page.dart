@@ -1,8 +1,10 @@
+import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/cupertino.dart' as cupertino;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yotifiy/core/assets.dart';
+import 'package:yotifiy/core/window_buttons.dart';
 import 'package:yotifiy/home_page/home_page.dart';
 import 'package:yotifiy/login/youtube_auth_cubit.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
@@ -22,7 +24,7 @@ class _YFLoginPageState extends State<YFLoginPage> {
       child: Scaffold(
         backgroundColor: context.colorTheme.background2,
         body: _buildLoginCard(),
-      ),
+      ), // TODO: scaffold needed?
     );
   }
 
@@ -68,6 +70,15 @@ class _YFLoginPageState extends State<YFLoginPage> {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Container(
+              alignment: Alignment.topCenter,
+              child: WindowTitleBarBox(
+                child: Row(children: [
+                  Expanded(child: MoveWindow()),
+                  WindowButtons(),
+                ]),
+              ),
+            ),
             context.spaceTheme.fixedSpace(3.h),
             _buildLogo(),
             Padding(
