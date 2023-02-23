@@ -1,6 +1,8 @@
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
+import 'package:yotifiy/core/theme/color.dart';
 import 'package:yotifiy/core/theme/text.dart';
 import 'package:yotifiy/import_page/import_page.dart';
 import 'package:yotifiy/overview_page/overview_page.dart';
@@ -27,37 +29,44 @@ class _YFHomePageState extends State<YFHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Row(
-      children: [
-        Flexible(flex: 1, child: _buildNavigationBar(context)),
-        Flexible(flex: 5, child: _buildCurrentPage()),
-      ],
-    ));
+      backgroundColor: context.colorTheme.background2,
+      body: Row(
+        children: [
+          Flexible(flex: 1, child: _buildNavigationBar(context)),
+          context.spaceTheme.fixedSpace(2.w),
+          Flexible(flex: 5, child: _buildCurrentPage()),
+        ],
+      ),
+    );
   }
 
   Widget _buildNavigationBar(BuildContext context) {
-    return Column(
-      children: [
-        Text('YOTIFY', style: textTheme.headline1),
-        _YFNavigationButton(
-          text: 'Home',
-          currentSelectedPage: currentPage,
-          pageName: PageName.overview,
-          onPressed: _changePage,
-        ),
-        _YFNavigationButton(
-          text: 'Playlists',
-          currentSelectedPage: currentPage,
-          pageName: PageName.playlistPage,
-          onPressed: _changePage,
-        ),
-        _YFNavigationButton(
-          text: 'Import',
-          currentSelectedPage: currentPage,
-          pageName: PageName.importPage,
-          onPressed: _changePage,
-        ),
-      ],
+    return Container(
+      color: YFColorTheme.black,
+      child: Column(
+        children: [
+          Text('YOTIFY', style: textTheme.headline1),
+          context.spaceTheme.fixedSpace(2.h),
+          _YFNavigationButton(
+            text: 'Home',
+            currentSelectedPage: currentPage,
+            pageName: PageName.overview,
+            onPressed: _changePage,
+          ),
+          _YFNavigationButton(
+            text: 'Playlists',
+            currentSelectedPage: currentPage,
+            pageName: PageName.playlistPage,
+            onPressed: _changePage,
+          ),
+          _YFNavigationButton(
+            text: 'Import',
+            currentSelectedPage: currentPage,
+            pageName: PageName.importPage,
+            onPressed: _changePage,
+          ),
+        ],
+      ),
     );
   }
 
