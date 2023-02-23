@@ -28,7 +28,9 @@ class YFPlaylistCubit extends Cubit<YFPlaylistState> with Logger {
   YFPlaylistCubit(this._youtubeApi) : super(YFPlaylistState());
 
   Future<void> getYoutubePlaylists() async {
-    emit(state.copyWith(isLoading: true));
+    if (state.data.isEmpty) {
+      emit(state.copyWith(isLoading: true));
+    }
     try {
       final r = await _youtubeApi.fetchPlaylists();
       emit(state.copyWith(data: r, isLoading: false));
