@@ -36,28 +36,18 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
           'Overview',
           style: context.textTheme.headline1,
         ),
-        SizedBox(height: context.spaceTheme.padding5),
         Row(
           children: [
             _buildPlaylistButton(context),
-            SizedBox(
-              width: context.spaceTheme.padding5,
-            ),
-            _buildImportButton(context)
-          ],
-        ),
-        SizedBox(
-          height: context.spaceTheme.padding5,
+            _buildImportButton(context),
+          ]..addSeparator(context.spaceTheme.fixedSpace(2.w)),
         ),
         Text(
           'Recent Playlists',
           style: context.textTheme.headline1,
         ),
-        SizedBox(
-          height: context.spaceTheme.padding2,
-        ),
         _buildRecentlyAddedPlaylists(context),
-      ],
+      ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
     );
   }
 
@@ -65,7 +55,13 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
     return InkWell(
       onTap: () => widget.onPageChange(PageName.playlistPage),
       child: Container(
-        color: Colors.red,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.red[600]!, Colors.red[300]!],
+          ),
+        ),
         child: Padding(
           padding: EdgeInsets.all(context.spaceTheme.padding4),
           child: Column(
@@ -90,7 +86,14 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
     return InkWell(
       onTap: () => widget.onPageChange(PageName.importPage),
       child: Container(
-        color: Colors.green,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.green[500]!, Colors.green[300]!],
+          ),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+        ),
         child: Padding(
           padding: EdgeInsets.all(context.spaceTheme.padding4),
           child: Column(
@@ -141,12 +144,11 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
       width: 100.w,
       height: 260.h,
       imageHeight: 120.h,
-      maxDescriptionTextLines: 1,
       boxDecoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
-          colors: [Colors.red[400]!, Colors.red[200]!],
+          colors: [Colors.pink[400]!, Colors.pink[200]!],
         ),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),

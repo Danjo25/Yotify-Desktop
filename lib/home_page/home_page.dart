@@ -52,18 +52,21 @@ class _YFHomePageState extends State<YFHomePage> {
             currentSelectedPage: currentPage,
             pageName: PageName.overview,
             onPressed: _changePage,
+            icon: Icons.home,
           ),
           _YFNavigationButton(
             text: 'Playlists',
             currentSelectedPage: currentPage,
             pageName: PageName.playlistPage,
             onPressed: _changePage,
+            icon: Icons.my_library_music_rounded,
           ),
           _YFNavigationButton(
             text: 'Import',
             currentSelectedPage: currentPage,
             pageName: PageName.importPage,
             onPressed: _changePage,
+            icon: Icons.import_export_rounded,
           ),
         ],
       ),
@@ -102,13 +105,17 @@ class _YFNavigationButton extends StatefulWidget {
   final PageName currentSelectedPage;
   final PageName pageName;
   final Function(PageName) onPressed;
+  final IconData icon;
 
   const _YFNavigationButton({
     required this.text,
     required this.currentSelectedPage,
     required this.pageName,
     required this.onPressed,
+    required this.icon,
   });
+
+  bool get _isCurrentSelectedPage => currentSelectedPage == pageName;
 
   @override
   State<_YFNavigationButton> createState() => _YFNavigationButtonState();
@@ -117,16 +124,38 @@ class _YFNavigationButton extends StatefulWidget {
 class _YFNavigationButtonState extends State<_YFNavigationButton> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => widget.onPressed(widget.pageName),
-      child: Container(
-        alignment: Alignment.center,
-        width: double.infinity,
-        color: widget.currentSelectedPage == widget.pageName
-            ? context.colorTheme.background1
-            : null,
-        child: Text(widget.text, style: context.textTheme.body1),
+    return Container(
+      alignment: Alignment.bottomLeft,
+      width: double.infinity,
+      child: TextButton.icon(
+        onPressed: () => widget.onPressed(widget.pageName),
+        icon: Icon(
+          widget.icon,
+          size: 9.w,
+          color: widget._isCurrentSelectedPage
+              ? YFColorTheme.white
+              : YFColorTheme.grey,
+        ),
+        label: Text(
+          widget.text,
+          style: context.textTheme.body1.copyWith(
+            color: widget._isCurrentSelectedPage
+                ? YFColorTheme.white
+                : YFColorTheme.grey,
+          ),
+        ),
       ),
     );
+    // return InkWell(
+    //   onTap: () => widget.onPressed(widget.pageName),
+    //   child: Container(
+    //     alignment: Alignment.center,
+    //     width: double.infinity,
+    //     color: widget.currentSelectedPage == widget.pageName
+    //         ? context.colorTheme.background1
+    //         : null,
+    //     child: Text(widget.text, style: context.textTheme.body1),
+    //   ),
+    // );
   }
 }
