@@ -69,6 +69,7 @@ class _YFHomePageState extends State<YFHomePage> {
 
   Widget _buildNavigationBar(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height - 30,
       color: YFColorTheme.black,
       child: Column(
         children: [
