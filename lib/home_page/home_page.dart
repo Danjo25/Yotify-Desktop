@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:yotifiy/core/build_context_extension.dart';
 import 'package:yotifiy/core/theme/color.dart';
 import 'package:yotifiy/core/theme/text.dart';
 import 'package:yotifiy/import_page/import_page.dart';
+import 'package:yotifiy/login/youtube_auth_cubit.dart';
 import 'package:yotifiy/overview_page/overview_page.dart';
 import 'package:yotifiy/playlist/playlist_page.dart';
 
@@ -79,6 +84,50 @@ class _YFHomePageState extends State<YFHomePage> {
             pageName: PageName.importPage,
             onPressed: _changePage,
             icon: Icons.import_export_rounded,
+          ),
+          const Expanded(child: SizedBox()),
+          _buildUserInfo(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserInfo() {
+    return Container(
+      alignment: Alignment.bottomLeft,
+      margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20.0),
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(40),
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: context.read<YFAuthCubit>().state.user?.picture ?? '',
+              width: 80.r,
+              height: 80.r,
+              imageErrorBuilder: (context, error, stackTrace) {
+                return Image.asset(
+                  'assets/images/profile_default.png',
+                  width: 80.r,
+                  height: 80.r,
+                );
+              },
+            ),
+          ),
+          Text(
+              '${context.read<YFAuthCubit>().state.user?.firstname ?? ''} ${(context.read<YFAuthCubit>().state.user?.lastname ?? '')}'),
+          const SizedBox(height: 10),
+          TextButton.icon(
+            icon: const Icon(Icons.logout), // Your icon here
+            label: const Text(
+              'Logout & Exit',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ), // Your text here
+            onPressed: () {
+              context.read<YFAuthCubit>().logout().then((value) => exit(0));
+            },
           ),
         ],
       ),
