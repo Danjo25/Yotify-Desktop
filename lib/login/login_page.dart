@@ -23,7 +23,18 @@ class _YFLoginPageState extends State<YFLoginPage> {
       listener: _authCubitListener,
       child: Scaffold(
         backgroundColor: context.colorTheme.background2,
-        body: _buildLoginCard(),
+        body: Column(children: [
+          Container(
+            alignment: Alignment.topCenter,
+            child: WindowTitleBarBox(
+              child: Row(children: [
+                Expanded(child: MoveWindow()),
+                WindowButtons(),
+              ]),
+            ),
+          ),
+          _buildLoginCard()
+        ]),
       ), // TODO: scaffold needed?
     );
   }
@@ -53,7 +64,7 @@ class _YFLoginPageState extends State<YFLoginPage> {
     return Center(
       child: Container(
         width: double.infinity,
-        height: double.infinity,
+        height: MediaQuery.of(context).size.height - 30,
         decoration: const BoxDecoration(
           color: Colors.purple,
           gradient: LinearGradient(
@@ -64,21 +75,14 @@ class _YFLoginPageState extends State<YFLoginPage> {
               Colors.red,
             ],
           ),
-          borderRadius: BorderRadius.all(Radius.circular(10)),
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(10),
+              bottomRight: Radius.circular(10)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              alignment: Alignment.topCenter,
-              child: WindowTitleBarBox(
-                child: Row(children: [
-                  Expanded(child: MoveWindow()),
-                  WindowButtons(),
-                ]),
-              ),
-            ),
             context.spaceTheme.fixedSpace(3.h),
             _buildLogo(),
             Padding(
