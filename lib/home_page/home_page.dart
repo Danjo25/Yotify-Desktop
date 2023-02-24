@@ -33,11 +33,30 @@ class _YFHomePageState extends State<YFHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.colorTheme.background2,
-      body: Row(
+      body: Column(
         children: [
-          Flexible(flex: 1, child: _buildNavigationBar(context)),
-          context.spaceTheme.fixedSpace(2.w),
-          Flexible(flex: 5, child: _buildCurrentPage()),
+          Container(
+            color: YFColorTheme.black,
+            alignment: Alignment.topRight,
+            child: WindowTitleBarBox(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: MoveWindow(),
+                  ),
+                  WindowButtons(),
+                ],
+              ),
+            ),
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Flexible(flex: 1, child: _buildNavigationBar(context)),
+              context.spaceTheme.fixedSpace(2.w),
+              Flexible(flex: 5, child: _buildCurrentPage()),
+            ],
+          ),
         ],
       ),
     );
@@ -48,16 +67,10 @@ class _YFHomePageState extends State<YFHomePage> {
       color: YFColorTheme.black,
       child: Column(
         children: [
-          Container(
-            alignment: Alignment.topCenter,
-            child: WindowTitleBarBox(
-              child: Row(children: [
-                Expanded(child: MoveWindow()),
-                WindowButtons(),
-              ]),
-            ),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text('YOTIFY', style: textTheme.headline1),
           ),
-          Text('YOTIFY', style: textTheme.headline1),
           context.spaceTheme.fixedSpace(2.h),
           _YFNavigationButton(
             text: 'Home',
@@ -139,35 +152,27 @@ class _YFNavigationButtonState extends State<_YFNavigationButton> {
     return Container(
       alignment: Alignment.bottomLeft,
       width: double.infinity,
-      child: TextButton.icon(
-        onPressed: () => widget.onPressed(widget.pageName),
-        icon: Icon(
-          widget.icon,
-          size: 9.w,
-          color: widget._isCurrentSelectedPage
-              ? YFColorTheme.white
-              : YFColorTheme.grey,
-        ),
-        label: Text(
-          widget.text,
-          style: context.textTheme.body1.copyWith(
+      child: FittedBox(
+        fit: BoxFit.fitWidth,
+        child: TextButton.icon(
+          onPressed: () => widget.onPressed(widget.pageName),
+          icon: Icon(
+            widget.icon,
+            size: 40,
             color: widget._isCurrentSelectedPage
                 ? YFColorTheme.white
                 : YFColorTheme.grey,
           ),
+          label: Text(
+            widget.text,
+            style: context.textTheme.body1.copyWith(
+              color: widget._isCurrentSelectedPage
+                  ? YFColorTheme.white
+                  : YFColorTheme.grey,
+            ),
+          ),
         ),
       ),
     );
-    // return InkWell(
-    //   onTap: () => widget.onPressed(widget.pageName),
-    //   child: Container(
-    //     alignment: Alignment.center,
-    //     width: double.infinity,
-    //     color: widget.currentSelectedPage == widget.pageName
-    //         ? context.colorTheme.background1
-    //         : null,
-    //     child: Text(widget.text, style: context.textTheme.body1),
-    //   ),
-    // );
   }
 }

@@ -84,6 +84,7 @@ class YFPlaylistItem extends StatelessWidget {
   final double imageHeight;
 
   const YFPlaylistItem({
+    super.key,
     required this.playlist,
     required this.width,
     required this.height,
@@ -107,31 +108,34 @@ class YFPlaylistItem extends StatelessWidget {
         decoration: boxDecoration,
         child: Padding(
           padding: EdgeInsets.all(context.spaceTheme.padding2),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Align(
-                alignment: Alignment.center,
-                child: SizedBox(
-                  height: imageHeight,
-                  child: Image.network(
-                    playlist.thumbnailURL,
-                    fit: BoxFit.fitHeight,
-                    errorBuilder: (_, __, ___) => Image.asset(
-                      YFAssets.defaultPlaylist,
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Align(
+                  alignment: Alignment.center,
+                  child: SizedBox(
+                    height: imageHeight,
+                    child: Image.network(
+                      playlist.thumbnailURL,
+                      fit: BoxFit.fitHeight,
+                      errorBuilder: (_, __, ___) => Image.asset(
+                        YFAssets.defaultPlaylist,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Text(playlist.name, style: context.textTheme.headline2),
-              Text(
-                playlist.description,
-                style: context.textTheme.body2,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text('${playlist.mediaItems.length} Titel')
-            ]..addSeparator(context.spaceTheme.fixedSpace(1.h)),
+                Text(playlist.name, style: context.textTheme.headline2),
+                Text(
+                  playlist.description,
+                  style: context.textTheme.body2,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text('${playlist.mediaItems.length} Titel')
+              ]..addSeparator(context.spaceTheme.fixedSpace(1.h)),
+            ),
           ),
         ),
       ),

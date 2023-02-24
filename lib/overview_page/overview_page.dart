@@ -28,26 +28,45 @@ class _YFOverviewPageState extends State<YFOverviewPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: context.spaceTheme.padding5 * 2),
-        Text(
-          'Overview',
-          style: context.textTheme.headline1,
-        ),
-        Row(
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height - 50,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildPlaylistButton(context),
-            _buildImportButton(context),
-          ]..addSeparator(context.spaceTheme.fixedSpace(2.w)),
+            Text(
+              'Overview',
+              style: context.textTheme.headline1,
+            ),
+            LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                if (constraints.maxWidth < 1030) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildPlaylistButton(context),
+                      _buildImportButton(context),
+                    ]..addSeparator(context.spaceTheme.fixedSpace(2.w)),
+                  );
+                } else {
+                  return Row(
+                    children: [
+                      _buildPlaylistButton(context),
+                      _buildImportButton(context),
+                    ]..addSeparator(context.spaceTheme.fixedSpace(2.w)),
+                  );
+                }
+              },
+            ),
+            Text(
+              'Recent Playlists',
+              style: context.textTheme.headline1,
+            ),
+            _buildRecentlyAddedPlaylists(context),
+          ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
         ),
-        Text(
-          'Recent Playlists',
-          style: context.textTheme.headline1,
-        ),
-        _buildRecentlyAddedPlaylists(context),
-      ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
+      ),
     );
   }
 
