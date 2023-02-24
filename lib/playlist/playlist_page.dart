@@ -37,9 +37,12 @@ class _YFPlaylistPageState extends State<YFPlaylistPage> {
                   child: const CircularProgressIndicator(),
                 ),
               )
-            : Padding(
-                padding: EdgeInsets.all(context.spaceTheme.padding4),
-                child: _buildList(state.data),
+            : SizedBox(
+                height: MediaQuery.of(context).size.height - 30,
+                child: Padding(
+                  padding: EdgeInsets.all(context.spaceTheme.padding4),
+                  child: _buildList(state.data),
+                ),
               );
       },
     );
