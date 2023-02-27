@@ -157,33 +157,36 @@ class YFPlaylistDetailsBody extends StatelessWidget {
 
       return TableRow(
         children: [
-          SizedBox(
-            height: 100.h,
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Text(
-                    counter.toString(),
-                    style: context.textTheme.headline4,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Image.network(
-                    e.mediaImageURL,
-                    errorBuilder: (_, __, ___) =>
-                        Image.asset(YFAssets.defaultPlaylist),
-                    fit: BoxFit.fitHeight,
-                  ),
-                  FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      e.name,
-                      style:
-                          context.textTheme.body2,
+          InkWell(
+            onTap: launchUrl(e.mediaURL),
+            child: SizedBox(
+              height: 100.h,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  children: [
+                    Text(
+                      counter.toString(),
+                      style: context.textTheme.headline4,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
+                    Image.network(
+                      e.mediaImageURL,
+                      errorBuilder: (_, __, ___) =>
+                          Image.asset(YFAssets.defaultPlaylist),
+                      fit: BoxFit.fitHeight,
+                    ),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        e.name,
+                        style:
+                            context.textTheme.body2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
+                ),
               ),
             ),
           ),

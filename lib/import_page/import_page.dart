@@ -35,29 +35,22 @@ class _YFImportPageState extends State<YFImportPage> {
                       hintText: "Paste spotify playlist link here",
                     ),
                     onSubmitted: (String url) {
-                      setState(() {
-                        context
-                            .read<YFImportPlaylistCubit>()
-                            .createPlaylist(url);
-                      });
+                      context.read<YFImportPlaylistCubit>().createPlaylist(url);
                     },
                   ),
-                  onSubmitted: (String url) {
-                    context.read<YFImportPlaylistCubit>().createPlaylist(url);
-                  },
-                ),
-                state.isLoading
-                    ? const Expanded(
-                        child: Center(
-                          child: SizedBox(
-                            child: CircularProgressIndicator(),
+                  state.isLoading
+                      ? const Expanded(
+                          child: Center(
+                            child: SizedBox(
+                              child: CircularProgressIndicator(),
+                            ),
                           ),
-                        ),
-                      )
-                    : state.data != null
-                        ? _buildPlaylistInformation(context, state.data!)
-                        : Container()
-              ],
+                        )
+                      : state.data != null
+                          ? _buildPlaylistInformation(context, state.data!)
+                          : Container()
+                ],
+              ),
             ),
           ),
         );
