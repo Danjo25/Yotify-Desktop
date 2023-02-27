@@ -54,6 +54,7 @@ class YFSpotifyApi {
         mediaURL: item['track']?['external_urls']?['spotify'] ?? '',
         mediaImageURL: item['track']?['album']?['images']?[0]?['url'] ?? '',
         owner: artistNames.join(', '),
+        publishDate: item['track']?['album']?['release_date'] ?? '',
       );
 
       mediaItems.add(mediaItem);
