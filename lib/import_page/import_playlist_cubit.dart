@@ -35,7 +35,6 @@ class YFImportPlaylistCubit extends Cubit<YFImportPlaylistState> with Logger {
       String playlistId = _parsePlaylistId(spotifyPlaylistUrl);
       emit(state.copyWith(isLoading: false));
       final r = await _spotifyApi.fetchPlaylist(playlistId);
-      print('${r.name} - ${r.description} - ${r.mediaItems.length}');
 
       emit(state.copyWith(data: r, isLoading: false));
     } catch (e, stack) {

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:oauth2_client/oauth2_helper.dart';
 import 'package:oauth2_client/spotify_oauth2_client.dart';
 import 'package:yotifiy/config.dart';
@@ -47,6 +48,8 @@ class YFSpotifyApi {
       List artists = item['track']?['artists'] ?? [];
       Iterable<String> artistNames =
           artists.map((artist) => artist['name'] ?? '');
+      
+      final publishDate = item['track']?['album']?['release_date'] ?? '';
 
       YFMediaItem mediaItem = YFMediaItem(
         id: item['track']?['id'] ?? '',
@@ -54,7 +57,7 @@ class YFSpotifyApi {
         mediaURL: item['track']?['external_urls']?['spotify'] ?? '',
         mediaImageURL: item['track']?['album']?['images']?[0]?['url'] ?? '',
         owner: artistNames.join(', '),
-        publishDate: item['track']?['album']?['release_date'] ?? '',
+        publishDate: _formatDate(publishDate),
       );
 
       mediaItems.add(mediaItem);
@@ -77,4 +80,16 @@ class YFSpotifyApi {
 
     return helper;
   }
+
+  String _formatDate(String? date) {
+    if (date == null) {
+      return '-';
+    }
+
+    DateTime dateTime = DateTime.parse(date);
+
+    return DateFormat('dd. MMMM yyyy').format(dateTime);
+  }
 }
+
+
