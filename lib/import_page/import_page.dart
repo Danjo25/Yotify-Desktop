@@ -23,9 +23,11 @@ class _YFImportPageState extends State<YFImportPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<YFImportPlaylistCubit, YFImportPlaylistState>(
       builder: (context, state) {
-        return Scaffold(
-          body: Container(
-            child: Column(
+        return SizedBox(
+          height: MediaQuery.of(context).size.height - 30,
+          child: Scaffold(
+            backgroundColor: context.colorTheme.background2,
+            body: Column(
               children: [
                 TextField(
                   decoration: const InputDecoration(
