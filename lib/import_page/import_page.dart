@@ -44,26 +44,7 @@ class _YFImportPageState extends State<YFImportPage> {
                   ),
                   state.isLoading || state.data == null
                       ? Container()
-                      : 2 + 2 == 5
-                          ? Column(
-                              children: [
-                                Container(
-                                    height: 200, width: 200, color: Colors.red),
-                                Container(
-                                    height: 200, width: 200, color: Colors.red),
-                                Container(
-                                    height: 200, width: 200, color: Colors.red),
-                                Container(
-                                    height: 200, width: 200, color: Colors.red),
-                                Container(
-                                    height: 200, width: 200, color: Colors.red),
-                                Container(
-                                    height: 200, width: 200, color: Colors.red),
-                                Container(
-                                    height: 200, width: 200, color: Colors.red),
-                              ],
-                            )
-                          : _buildPlaylistInformation(context, state.data!),
+                      : _buildPlaylistInformation(context, state.data!),
                 ],
               ),
             ),
