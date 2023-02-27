@@ -76,8 +76,9 @@ class _YFLoginPageState extends State<YFLoginPage> {
             ],
           ),
           borderRadius: BorderRadius.only(
-              bottomLeft: Radius.circular(10),
-              bottomRight: Radius.circular(10)),
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(10),
+          ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
