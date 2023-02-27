@@ -140,13 +140,22 @@ class YFPlaylistDetailsBody extends StatelessWidget {
               child: Row(
                 children: [
                   Text(counter.toString(), style: context.textTheme.headline4),
-                  Image.network(
-                    e.mediaImageURL,
-                    errorBuilder: (_, __, ___) =>
-                        Image.asset(YFAssets.defaultPlaylist),
-                    fit: BoxFit.fitHeight,
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: GestureDetector(
+                      onTap: launchUrl(e.mediaURL), // Image tapped
+                      child: Image.network(
+                        e.mediaImageURL,
+                        errorBuilder: (_, __, ___) =>
+                            Image.asset(YFAssets.defaultPlaylist),
+                        fit: BoxFit.fitHeight,
+                      ),
+                    ),
                   ),
-                  Text(e.name, style: context.textTheme.body2),
+                  InkWell(
+                    onTap: launchUrl(e.mediaURL),
+                    child: Text(e.name, style: context.textTheme.body2),
+                  )
                 ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
               ),
             ),
