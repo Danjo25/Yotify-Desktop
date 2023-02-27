@@ -27,22 +27,45 @@ class _YFImportPageState extends State<YFImportPage> {
           height: MediaQuery.of(context).size.height - 30,
           child: Scaffold(
             backgroundColor: context.colorTheme.background2,
-            body: Column(
-              children: [
-                TextField(
-                  decoration: const InputDecoration(
-                    hintText: "Paste spotify playlist link here",
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      hintText: "Paste spotify playlist link here",
+                    ),
+                    onSubmitted: (String url) {
+                      setState(() {
+                        context
+                            .read<YFImportPlaylistCubit>()
+                            .createPlaylist(url);
+                      });
+                    },
                   ),
-                  onSubmitted: (String url) {
-                    setState(() {
-                      context.read<YFImportPlaylistCubit>().createPlaylist(url);
-                    });
-                  },
-                ),
-                state.isLoading || state.data == null
-                    ? Container()
-                    : _buildPlaylistInformation(context, state.data!)
-              ],
+                  state.isLoading || state.data == null
+                      ? Container()
+                      : 2 + 2 == 5
+                          ? Column(
+                              children: [
+                                Container(
+                                    height: 200, width: 200, color: Colors.red),
+                                Container(
+                                    height: 200, width: 200, color: Colors.red),
+                                Container(
+                                    height: 200, width: 200, color: Colors.red),
+                                Container(
+                                    height: 200, width: 200, color: Colors.red),
+                                Container(
+                                    height: 200, width: 200, color: Colors.red),
+                                Container(
+                                    height: 200, width: 200, color: Colors.red),
+                                Container(
+                                    height: 200, width: 200, color: Colors.red),
+                              ],
+                            )
+                          : _buildPlaylistInformation(context, state.data!),
+                ],
+              ),
             ),
           ),
         );
@@ -59,61 +82,53 @@ class _YFImportPageState extends State<YFImportPage> {
           height: 10.h,
         ),
         Container(
-          color: context.colorTheme.background4,
-          child: Padding(
-            padding: EdgeInsets.all(context.spaceTheme.padding5),
-            child: Row(
-              children: [
-                SizedBox(
-                  height: 200.h,
-                  child: Image.network(
-                    playlist.thumbnailURL,
-                    fit: BoxFit.fitHeight,
-                    errorBuilder: (_, __, ___) => Image.asset(
-                      YFAssets.defaultPlaylist,
+          color: context.colorTheme.background2,
+          child: Row(
+            children: [
+              SizedBox(
+                height: 200.h,
+                child: Image.network(
+                  playlist.thumbnailURL,
+                  fit: BoxFit.fitHeight,
+                  errorBuilder: (_, __, ___) => Image.asset(
+                    YFAssets.defaultPlaylist,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(playlist.name, style: context.textTheme.headline2),
+                    SizedBox(
+                      child: Text(
+                        playlist.description,
+                        style: context.textTheme.body2,
+                      ),
                     ),
-                  ),
+                    _ImportPageButton(
+                        text: 'Open in Web',
+                        onPressed: launchUrl(playlist.playlistURL)),
+                    _ImportPageButton(
+                      text: 'Import Playlist',
+                      onPressed: () => setState(() {
+                        context
+                            .read<YFImportPlaylistCubit>()
+                            .importPlaylist(playlist);
+                      }),
+                    ),
+                  ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(playlist.name, style: context.textTheme.headline2),
-                      SizedBox(
-                        child: Text(
-                          playlist.description,
-                          style: context.textTheme.body2,
-                        ),
-                      ),
-                      _ImportPageButton(
-                          text: 'Open in Web',
-                          onPressed: launchUrl(playlist.playlistURL)),
-                      _ImportPageButton(
-                        text: 'Import Playlist',
-                        onPressed: () => setState(() {
-                          context
-                              .read<YFImportPlaylistCubit>()
-                              .importPlaylist(playlist);
-                        }),
-                      ),
-                      _ImportPageButton(
-                        text: 'Edit Playlist and Import',
-                        onPressed: () => Navigator.of(context).push(
-                          cupertino.CupertinoPageRoute(
-                            builder: (context) => YFPlaylistDetailsPage(
-                                playlist: playlist, isEditMode: true),
-                          ),
-                        ),
-                      )
-                    ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
+        ),
+        YFPlaylistDetailsBody(
+          playlist: playlist,
+          isImportView: true,
         ),
       ],
     );

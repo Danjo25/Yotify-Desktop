@@ -32,7 +32,6 @@ class YFPlaylistDetailsPage extends StatelessWidget {
       )),
       body: YFPlaylistDetailsBody(
         playlist: playlist,
-        isEditMode: isEditMode,
       ),
     );
   }
@@ -40,42 +39,47 @@ class YFPlaylistDetailsPage extends StatelessWidget {
 
 class YFPlaylistDetailsBody extends StatelessWidget {
   final YFPlaylist playlist;
-  final bool isEditMode;
+  final bool isImportView;
 
   const YFPlaylistDetailsBody({
     super.key,
+    this.isImportView = false,
     required this.playlist,
-    this.isEditMode = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final columns = [
-      'Title',
-      'Artist',
-      isEditMode ? 'Import Song' : 'Release Date'
-    ];
+    final columns = ['Title', 'Artist', 'Release Date'];
 
     return SingleChildScrollView(
       child: Column(
         children: [
-          _buildPlaylistInformation(context),
-          Divider(
-            thickness: context.spaceTheme.padding1,
-            color: context.colorTheme.background2,
-          ),
-          SizedBox(
-            child: Padding(
-              padding: EdgeInsets.all(context.spaceTheme.padding1),
-              child: SizedBox(
-                width: double.infinity,
-                child: DataTable(
-                  dataRowHeight: 100.h,
-                  columnSpacing: context.spaceTheme.padding5,
-                  columns: _getColumns(columns),
-                  rows: _getRows(playlist.mediaItems, context),
-                ),
-              ),
+          if (!isImportView) ...[
+            _buildPlaylistInformation(context),
+            Divider(
+              thickness: context.spaceTheme.padding1,
+              color: context.colorTheme.background2,
+            ),
+          ],
+          if (isImportView)
+            SizedBox(
+              height: 30.h,
+            ),
+          Padding(
+            padding: isImportView
+                ? const EdgeInsets.all(0)
+                : EdgeInsets.all(context.spaceTheme.padding2),
+            child: Table(
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+              columnWidths: const {
+                0: FractionColumnWidth(0.7),
+                1: FractionColumnWidth(0.2),
+                2: FractionColumnWidth(0.1),
+              },
+              children: [
+                _getColumns(columns, context),
+                ..._getRows(playlist.mediaItems, context),
+              ],
             ),
           )
         ],
@@ -121,42 +125,78 @@ class YFPlaylistDetailsBody extends StatelessWidget {
     );
   }
 
-  List<DataColumn> _getColumns(List<String> columns) {
-    return columns.map((String column) {
-      return DataColumn(label: Text(column));
-    }).toList();
+  TableRow _getColumns(
+    List<String> columns,
+    BuildContext context,
+  ) {
+    return TableRow(
+        children: columns.map((String column) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            column,
+            style: context.textTheme.headline2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Divider(
+            thickness: context.spaceTheme.padding05,
+            color: isImportView
+                ? context.colorTheme.background1
+                : context.colorTheme.background2,
+          ),
+        ],
+      );
+    }).toList());
   }
 
-  List<DataRow> _getRows(List<YFMediaItem> songs, BuildContext context) {
+  List<TableRow> _getRows(List<YFMediaItem> songs, BuildContext context) {
     int counter = 0;
     return songs.map((e) {
       counter++;
 
-      return DataRow(
-        cells: [
-          DataCell(
-            SizedBox(
-              width: 200.w,
+      return TableRow(
+        children: [
+          SizedBox(
+            height: 100.h,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
               child: Row(
                 children: [
-                  Text(counter.toString(), style: context.textTheme.headline4),
+                  Text(
+                    counter.toString(),
+                    style: context.textTheme.headline4,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   Image.network(
                     e.mediaImageURL,
                     errorBuilder: (_, __, ___) =>
                         Image.asset(YFAssets.defaultPlaylist),
                     fit: BoxFit.fitHeight,
                   ),
-                  Text(e.name, style: context.textTheme.body2),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      e.name,
+                      style:
+                          context.textTheme.body2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
                 ]..addSeparator(context.spaceTheme.fixedSpace(2.h)),
               ),
             ),
           ),
-          DataCell(Text(e.owner, style: context.textTheme.body2)),
-
-          // TODO: Für die Checkboxen in der import settings page dann am besten eine eigene Klasse _DataRowItem
-          // TODO: erstellen, damit darin dann das isSelected bool gesetzt werden kann. Anschließend muss die Liste
-          // TODO: mit allen isSelected Items in einer Liste gespeichert werden, für die neue Playlist.
-          DataCell(Text(e.publishDate, style: context.textTheme.body2)),
+          Text(
+            e.owner,
+            style: context.textTheme.body2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            e.publishDate,
+            style: context.textTheme.body2,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       );
     }).toList();
