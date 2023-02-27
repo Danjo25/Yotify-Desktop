@@ -72,9 +72,9 @@ class YFPlaylistDetailsBody extends StatelessWidget {
             child: Table(
               defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               columnWidths: const {
-                0: FractionColumnWidth(0.7),
+                0: FractionColumnWidth(0.65),
                 1: FractionColumnWidth(0.2),
-                2: FractionColumnWidth(0.1),
+                2: FractionColumnWidth(0.15),
               },
               children: [
                 _getColumns(columns, context),
