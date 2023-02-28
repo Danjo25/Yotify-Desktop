@@ -1,3 +1,4 @@
+import 'package:yotifiy/core/api/spotify_api.dart';
 import 'package:yotifiy/core/api/youtube_api.dart';
 import 'package:yotifiy/core/logger.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,8 +27,9 @@ class YFYoutubeAuthState {
 
 class YFAuthCubit extends Cubit<YFYoutubeAuthState> with Logger {
   final YFYoutubeApi _youtubeApi;
+  final YFSpotifyApi _spotifyApi;
 
-  YFAuthCubit(this._youtubeApi) : super(YFYoutubeAuthState());
+  YFAuthCubit(this._youtubeApi, this._spotifyApi) : super(YFYoutubeAuthState());
 
   Future<void> login() async {
     try {
@@ -56,6 +58,7 @@ class YFAuthCubit extends Cubit<YFYoutubeAuthState> with Logger {
     try {
       emit(state.copyWith(isLoading: true));
 
+      await _spotifyApi.logout();
       await _youtubeApi.logout();
 
       emit(state.copyWith(

@@ -18,6 +18,10 @@ class YFSpotifyApi {
       : _clientId = Config.spotifyClientId(),
         _clientSecret = Config.spotifyClientSecret();
 
+  Future<void> logout() async {
+    await _authHelper.removeAllTokens();
+  }
+
   Future<YFPlaylist> fetchPlaylist(String playlistId) async {
     var res = await _authHelper.get(_endpointPlaylist + playlistId);
     var data = jsonDecode(res.body); // TODO: throw exception if invalid status
@@ -48,7 +52,7 @@ class YFSpotifyApi {
       List artists = item['track']?['artists'] ?? [];
       Iterable<String> artistNames =
           artists.map((artist) => artist['name'] ?? '');
-      
+
       final publishDate = item['track']?['album']?['release_date'] ?? '';
 
       YFMediaItem mediaItem = YFMediaItem(
@@ -91,5 +95,3 @@ class YFSpotifyApi {
     return DateFormat('dd. MMMM yyyy').format(dateTime);
   }
 }
-
-

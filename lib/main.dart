@@ -38,7 +38,7 @@ final _youtubeApi = YFYoutubeApi();
 final _spotifyApi = YFSpotifyApi();
 final _storage = YFStorage();
 final _playlistImporter = YFPlaylistImporter();
-final _authCubit = YFAuthCubit(_youtubeApi);
+final _authCubit = YFAuthCubit(_youtubeApi, _spotifyApi);
 final _playlistCubit = YFPlaylistCubit(_youtubeApi);
 final _importPlaylistCubit = YFImportPlaylistCubit(
   _spotifyApi,
